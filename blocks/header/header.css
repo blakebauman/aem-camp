@@ -315,7 +315,7 @@ header .breadcrumbs ol li[aria-current] {
   color: var(--text-color);
 }
 
-@media (width >= 900px) {
+@media (min-width: 900px) {
   header .breadcrumbs {
     display: block;
     max-width: 1264px;
