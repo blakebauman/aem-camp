@@ -143,12 +143,12 @@ When completing documentation search, provide:
 ## Search Tips for Quality Results
 
 **Be specific:**
-❌ "How do blocks work?"
-✅ "How do I lazy load images in blocks?"
+ERROR: "How do blocks work?"
+"How do I lazy load images in blocks?"
 
 **Provide context:**
-❌ "fragments"
-✅ "How to load header/footer as fragments"
+ERROR: "fragments"
+"How to load header/footer as fragments"
 
 **Multiple searches for complex topics:**
 - Search for individual concepts separately

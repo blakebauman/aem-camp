@@ -409,19 +409,19 @@ If you're stuck:
 
 **To avoid issues:**
 
-- ✅ Run `npm test` before every commit
-- ✅ Run `npm run lint` before every commit
-- ✅ Use `npm run test:watch` during development
-- ✅ Test in browser manually before opening PR
-- ✅ Include test links in PR descriptions
-- ✅ Monitor `gh pr checks` after creating PR
+- Run `npm test` before every commit
+- Run `npm run lint` before every commit
+- Use `npm run test:watch` during development
+- Test in browser manually before opening PR
+- Include test links in PR descriptions
+- Monitor `gh pr checks` after creating PR
 
 **Don't:**
-- ❌ Skip testing locally
-- ❌ Commit failing tests
-- ❌ Ignore linting errors
-- ❌ Force push without re-running tests
-- ❌ Merge PRs with failing checks
+- ERROR: Skip testing locally
+- ERROR: Commit failing tests
+- ERROR: Ignore linting errors
+- ERROR: Force push without re-running tests
+- ERROR: Merge PRs with failing checks
 
 ## Quick Diagnostic Commands
 

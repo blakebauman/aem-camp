@@ -14,7 +14,7 @@ Agents are specialized versions of Claude configured for specific complex tasks.
 
 ## Available Agents
 
-### 🛠️ Block Developer (`block-developer`)
+### Block Developer (`block-developer`)
 
 **Purpose:** Comprehensive block development from content modeling through testing
 
@@ -35,7 +35,7 @@ Agents are specialized versions of Claude configured for specific complex tasks.
 
 **Auto-activates on:** "create a block", "new block", "build a block", "implement block"
 
-### 📋 Content Modeler (`content-modeler`)
+### Content Modeler (`content-modeler`)
 
 **Purpose:** Designing author-friendly content models and structures
 
@@ -56,7 +56,7 @@ Agents are specialized versions of Claude configured for specific complex tasks.
 
 **Auto-activates on:** "content model", "authoring structure", "design content"
 
-### 🧪 Testing Specialist (`testing-specialist`)
+### Testing Specialist (`testing-specialist`)
 
 **Purpose:** Comprehensive testing and quality assurance
 
@@ -79,7 +79,7 @@ Agents are specialized versions of Claude configured for specific complex tasks.
 
 **Auto-activates on:** "test the block", "validate changes", "PR ready", "quality check"
 
-### 📚 Documentation Expert (`docs-expert`)
+### Documentation Expert (`docs-expert`)
 
 **Purpose:** Finding documentation, examples, and reference implementations
 

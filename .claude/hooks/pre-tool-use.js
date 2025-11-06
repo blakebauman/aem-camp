@@ -46,7 +46,7 @@ export default async function preToolUse({ tool, parameters, context }) {
   if (isBlockModification && !context.devServerChecked) {
     warnings.push({
       severity: 'low',
-      message: '💡 **Dev Server Check**',
+      message: '**Dev Server Check**',
       detail: 'Is your AEM dev server running?',
       action: 'Run `aem up` if not already started.',
       blockExecution: false
@@ -60,7 +60,7 @@ export default async function preToolUse({ tool, parameters, context }) {
     if (!context.testingCompleted) {
       warnings.push({
         severity: 'medium',
-        message: '⚠️ **Testing Reminder**',
+        message: 'WARNING: **Testing Reminder**',
         detail: 'Have you completed testing before pushing?',
         action: 'Use the `testing-blocks` skill for comprehensive validation.',
         blockExecution: false

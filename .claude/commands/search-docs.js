@@ -21,7 +21,7 @@ export default {
       return {
         success: false,
         message: [
-          '❌ Please provide a search query.',
+          'ERROR: Please provide a search query.',
           '',
           'Usage: `/search-docs <query>`',
           '',
@@ -32,16 +32,16 @@ export default {
           '- `/search-docs metadata`',
           '',
           '**Search Sources:**',
-          '- 📚 aem.live documentation',
-          '- 📝 Developer blogs',
-          '- 🎓 Tutorials and guides',
-          '- 💡 Best practices'
+          '- aem.live documentation',
+          '- Developer blogs',
+          '- Tutorials and guides',
+          '- Best practices'
         ].join('\n')
       };
     }
 
     const message = [
-      `📚 **Searching AEM Documentation for: "${query}"**`,
+      `**Searching AEM Documentation for: "${query}"**`,
       '',
       '**Search Coverage:**',
       '- aem.live platform docs',

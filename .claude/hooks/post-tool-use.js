@@ -22,7 +22,7 @@ export default async function postToolUse({ tool, parameters, result, context })
   ) {
     autoActions.push({
       type: 'lint',
-      message: '🔍 Running automatic linting...',
+      message: 'Running automatic linting...',
       command: 'npm run lint:fix',
       reason: 'Code file was modified'
     });
@@ -36,7 +36,7 @@ export default async function postToolUse({ tool, parameters, result, context })
   ) {
     suggestions.push({
       type: 'testing',
-      message: '🧪 **Next Step:** Test your block implementation',
+      message: '**Next Step:** Test your block implementation',
       actions: [
         'View in browser: http://localhost:3000/your-test-content',
         'Run linting: `npm run lint`',

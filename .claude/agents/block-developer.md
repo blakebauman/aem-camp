@@ -72,14 +72,14 @@ You have access to these skills (invoke them when needed):
 ## Deliverables
 
 When completing block development, ensure:
-- ✅ Test content exists and is accessible
-- ✅ Content model is documented
-- ✅ JavaScript decoration is clean and commented
-- ✅ CSS is responsive and scoped
-- ✅ All variants work correctly
-- ✅ Linting passes (`npm run lint`)
-- ✅ Block is tested across devices
-- ✅ Accessibility basics verified
+- Test content exists and is accessible
+- Content model is documented
+- JavaScript decoration is clean and commented
+- CSS is responsive and scoped
+- All variants work correctly
+- Linting passes (`npm run lint`)
+- Block is tested across devices
+- Accessibility basics verified
 
 ## Remember
 

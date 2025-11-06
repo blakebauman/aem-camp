@@ -258,7 +258,7 @@ const icon = getIcon('search');
 
 ## Anti-Patterns to Avoid
 
-❌ **Don't:**
+ERROR: **Don't:**
 - Modify `scripts/aem.js` (core library)
 - Start coding before content exists
 - Create developer-friendly but author-hostile models
@@ -271,7 +271,7 @@ const icon = getIcon('search');
 - Block rendering with synchronous scripts
 - Hardcode content that should be authored
 
-✅ **Do:**
+**Do:**
 - Follow Content-Driven Development
 - Design for authors
 - Keep blocks simple and focused

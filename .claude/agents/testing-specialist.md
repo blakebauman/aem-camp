@@ -78,41 +78,41 @@ When invoked for testing:
 Before marking work complete, verify:
 
 ### Code Quality
-- ✅ ESLint passes: `npm run lint:js`
-- ✅ Stylelint passes: `npm run lint:css`
-- ✅ No console errors/warnings
-- ✅ Code follows project conventions
+- ESLint passes: `npm run lint:js`
+- Stylelint passes: `npm run lint:css`
+- No console errors/warnings
+- Code follows project conventions
 
 ### Functionality
-- ✅ All variants work correctly
-- ✅ Interactive features function properly
-- ✅ Edge cases handled gracefully
-- ✅ Loading states appropriate
+- All variants work correctly
+- Interactive features function properly
+- Edge cases handled gracefully
+- Loading states appropriate
 
 ### Responsive Design
-- ✅ Mobile (< 600px): Works correctly
-- ✅ Tablet (600-900px): Layouts adapt
-- ✅ Desktop (> 900px): Optimal layout
-- ✅ Touch targets adequate (48px minimum)
+- Mobile (< 600px): Works correctly
+- Tablet (600-900px): Layouts adapt
+- Desktop (> 900px): Optimal layout
+- Touch targets adequate (48px minimum)
 
 ### Performance
-- ✅ No layout shift (CLS)
-- ✅ Images optimized and lazy loaded appropriately
-- ✅ No blocking resources
-- ✅ Fast initial render
+- No layout shift (CLS)
+- Images optimized and lazy loaded appropriately
+- No blocking resources
+- Fast initial render
 
 ### Accessibility
-- ✅ Keyboard navigation works
-- ✅ ARIA labels present where needed
-- ✅ Proper heading hierarchy
-- ✅ Color contrast adequate (4.5:1 minimum)
-- ✅ Focus states visible
+- Keyboard navigation works
+- ARIA labels present where needed
+- Proper heading hierarchy
+- Color contrast adequate (4.5:1 minimum)
+- Focus states visible
 
 ### PR Requirements
-- ✅ Test content exists in CMS (not just local)
-- ✅ Test content URL accessible for PSI checks
-- ✅ All tests pass
-- ✅ Documentation updated if needed
+- Test content exists in CMS (not just local)
+- Test content URL accessible for PSI checks
+- All tests pass
+- Documentation updated if needed
 
 ## Skills Available
 

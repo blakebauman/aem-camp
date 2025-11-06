@@ -21,7 +21,7 @@ export default {
       return {
         success: false,
         message: [
-          '❌ Please provide a search query.',
+          'ERROR: Please provide a search query.',
           '',
           'Usage: `/find-examples <query>`',
           '',
@@ -32,15 +32,15 @@ export default {
           '- `/find-examples form validation`',
           '',
           '**Search Sources:**',
-          '- 🎨 Block Collection (curated examples)',
-          '- 🎉 Block Party (community contributions)',
-          '- 💻 GitHub repositories'
+          '- Block Collection (curated examples)',
+          '- Block Party (community contributions)',
+          '- GitHub repositories'
         ].join('\n')
       };
     }
 
     const message = [
-      `🎨 **Searching for block examples: "${query}"**`,
+      `**Searching for block examples: "${query}"**`,
       '',
       '**Searching:**',
       '- Block Collection (official examples)',

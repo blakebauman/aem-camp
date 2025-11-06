@@ -10,10 +10,10 @@ Guidelines for implementing AEM Edge Delivery blocks with proper decoration, sty
 ## Prerequisites
 
 Before implementing a block, you MUST have:
-- ✅ Test content created or identified
-- ✅ Content model designed and documented
-- ✅ Test content accessible in dev environment
-- ✅ Similar blocks researched (Block Collection/Party)
+- Test content created or identified
+- Content model designed and documented
+- Test content accessible in dev environment
+- Similar blocks researched (Block Collection/Party)
 
 **If you don't have these, use Content-Driven Development process first.**
 
@@ -379,12 +379,12 @@ function makeKeyboardAccessible(element, callback) {
 ### Minimize DOM Operations
 
 ```javascript
-// ❌ Bad: Multiple reflows
+// ERROR: Bad: Multiple reflows
 rows.forEach(row => {
   block.append(buildCard(row));
 });
 
-// ✅ Good: Single append
+// Good: Single append
 const fragment = document.createDocumentFragment();
 rows.forEach(row => {
   fragment.append(buildCard(row));
@@ -550,7 +550,7 @@ function setupTabs(block) {
 
 ## Anti-Patterns to Avoid
 
-❌ **Don't:**
+ERROR: **Don't:**
 - Use `innerHTML` with user content (XSS risk)
 - Modify `scripts/aem.js`
 - Create non-responsive blocks
@@ -561,7 +561,7 @@ function setupTabs(block) {
 - Use jQuery or heavy libraries
 - Block the main thread
 
-✅ **Do:**
+**Do:**
 - Use `textContent` for text, `createElement` for structure
 - Import from `aem.js`, never modify it
 - Mobile-first responsive design

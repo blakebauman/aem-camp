@@ -2,7 +2,7 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## 🚀 Enhanced with Claude Code Infrastructure
+## Enhanced with Claude Code Infrastructure
 
 This project includes a comprehensive Claude Code infrastructure for scaled enterprise development:
 
@@ -83,7 +83,7 @@ Blocks are automatically discovered and loaded based on DOM structure. The `scri
 
 ## Claude Code Infrastructure
 
-### 📁 Directory Structure
+### Directory Structure
 
 ```
 .claude/
@@ -126,7 +126,7 @@ Blocks are automatically discovered and loaded based on DOM structure. The `scri
 └── discover-skills  # Script to list available skills
 ```
 
-### 🎯 Skills (Auto-Activating)
+### Skills (Auto-Activating)
 
 Skills guide development processes and auto-activate based on your prompts:
 
@@ -138,7 +138,7 @@ Skills guide development processes and auto-activate based on your prompts:
 
 **Discover skills:** Run `./.agents/discover-skills` or check `.claude/skills/`
 
-### 🤖 Agents (Specialized Experts)
+### Agents (Specialized Experts)
 
 Delegate complex tasks to specialized agents:
 
@@ -149,7 +149,7 @@ Delegate complex tasks to specialized agents:
 
 **Usage:** Mention `@agent-name` or let auto-activation handle it
 
-### ⚡ Hooks (Auto-Activation System)
+### Hooks (Auto-Activation System)
 
 Hooks enforce best practices and provide automatic guidance:
 
@@ -160,7 +160,7 @@ Hooks enforce best practices and provide automatic guidance:
 
 **Benefits:** Skills activate automatically, mistakes prevented before they happen
 
-### 💬 Commands (Quick Workflows)
+### Commands (Quick Workflows)
 
 Slash commands for instant access to common tasks:
 
@@ -174,7 +174,7 @@ Slash commands for instant access to common tasks:
 /pr-ready                      # Check PR readiness
 ```
 
-### 📚 Persistent Documentation
+### Persistent Documentation
 
 Documentation that survives context resets, loaded automatically:
 
@@ -185,7 +185,7 @@ Documentation that survives context resets, loaded automatically:
 
 **Location:** `.claude/docs/` - Check there for detailed information
 
-### 🎨 Examples
+### Examples
 
 Blog domain examples demonstrate best practices:
 
@@ -242,12 +242,12 @@ Option 2 (Natural): "How do I implement lazy loading?"
 The `pre-tool-use.js` hook **blocks** block code changes without test content:
 
 ```javascript
-// ❌ This will be prevented
+// ERROR: This will be prevented
 1. Try to write block code
 2. Hook detects no content-driven-development active
 3. Blocks operation, suggests proper workflow
 
-// ✅ This is the correct flow
+// This is the correct flow
 1. Use /new-block or "Create a block"
 2. Content-driven-development activates
 3. Guide creates/identifies test content

@@ -120,12 +120,12 @@ Use this checklist to validate your content model:
 - [ ] Consider edge cases (empty cells, optional content, etc.)
 
 **Common Anti-Patterns to Avoid:**
-- ❌ Too many columns (>4 per row)
-- ❌ Using Configuration model when Standalone or Collection would work
-- ❌ Non-semantic cell content (e.g., "column1", "column2")
-- ❌ Requiring authors to input data that could be inferred or defaulted
-- ❌ Complex nested structures that confuse authors
-- ❌ Models that only work in one specific authoring tool
+- ERROR: Too many columns (>4 per row)
+- ERROR: Using Configuration model when Standalone or Collection would work
+- ERROR: Non-semantic cell content (e.g., "column1", "column2")
+- ERROR: Requiring authors to input data that could be inferred or defaulted
+- ERROR: Complex nested structures that confuse authors
+- ERROR: Models that only work in one specific authoring tool
 
 ### Step 4: Document the Content Model
 
@@ -176,11 +176,11 @@ Provide the content model back to the calling skill (or user) in this format:
    - Authors could structure this multiple ways - decoration code will handle variations
 
 3. **Validate**:
-   - ✅ Standalone model (appropriate for hero)
-   - ✅ Semantic formatting will identify elements (H1 for heading, links for CTA)
-   - ✅ Flexible structure - can work with different layouts
-   - ✅ Reusable (works in any authoring tool)
-   - ✅ Under 4 cells per row
+   - Standalone model (appropriate for hero)
+   - Semantic formatting will identify elements (H1 for heading, links for CTA)
+   - Flexible structure - can work with different layouts
+   - Reusable (works in any authoring tool)
+   - Under 4 cells per row
 
 4. **Document and Return to Calling Skill**:
    ```markdown

@@ -20,17 +20,17 @@ export default {
     if (!blockName) {
       return {
         success: false,
-        message: '❌ Please provide a block name.\n\nUsage: `/find-content <block-name> [variant]`\n\nExample: `/find-content hero`\nExample: `/find-content cards three-up`'
+        message: 'ERROR: Please provide a block name.\n\nUsage: `/find-content <block-name> [variant]`\n\nExample: `/find-content hero`\nExample: `/find-content cards three-up`'
       };
     }
 
     const message = [
-      `🔍 **Searching for pages using block: \`${blockName}\`${variant ? ` (variant: ${variant})` : ''}**`,
+      `**Searching for pages using block: \`${blockName}\`${variant ? ` (variant: ${variant})` : ''}**`,
       '',
       '**Search Targets:**',
-      '- 📍 Local: http://localhost:3000',
-      '- 🌐 Preview: *.aem.page',
-      '- ✅ Live: *.aem.live',
+      '- Local: http://localhost:3000',
+      '- Preview: *.aem.page',
+      '- Live: *.aem.live',
       '',
       'Running search script...',
       ''

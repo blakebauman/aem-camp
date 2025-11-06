@@ -14,7 +14,7 @@ Unlike hooks (which are automatic) and agents (which are model-invoked), **comma
 
 ## Available Commands
 
-### 🛠️ Development Commands
+### Development Commands
 
 #### `/new-block`
 Start Content-Driven Development workflow for a new block.
@@ -60,7 +60,7 @@ Start the AEM development server.
 
 ---
 
-### 🧪 Testing Commands
+### Testing Commands
 
 #### `/test-block`
 Run comprehensive testing on a block.
@@ -104,7 +104,7 @@ Comprehensive PR readiness check.
 
 ---
 
-### 📋 Content Commands
+### Content Commands
 
 #### `/find-content`
 Search for pages using a specific block.
@@ -133,7 +133,7 @@ Search for pages using a specific block.
 
 ---
 
-### 📚 Documentation Commands
+### Documentation Commands
 
 #### `/search-docs`
 Search AEM Edge Delivery Services documentation.
@@ -350,7 +350,7 @@ Commands are configured in `.clauderc`:
 - Provide examples in error messages
 - Give progress updates
 - Suggest next steps
-- Use emojis for quick scanning
+- Use icons for quick scanning
 
 **Integration:**
 - Activate appropriate agents/skills

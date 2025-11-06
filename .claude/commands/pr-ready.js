@@ -15,7 +15,7 @@ export default {
   
   async execute({ args, context }) {
     const message = [
-      '✅ **Pull Request Readiness Check**',
+      '**Pull Request Readiness Check**',
       '',
       'Running comprehensive validation to ensure your changes are ready for PR...',
       '',

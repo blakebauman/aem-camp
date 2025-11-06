@@ -31,9 +31,9 @@ This skill handles:
 ## Prerequisites
 
 **REQUIRED before using this skill:**
-- ✅ Test content must exist (in CMS or local drafts)
-- ✅ Content model must be defined
-- ✅ Test content URL must be available
+- Test content must exist (in CMS or local drafts)
+- Content model must be defined
+- Test content URL must be available
 
 **Information needed:**
 1. **Block name**: What should the block be called?
@@ -57,8 +57,8 @@ This skill handles:
 **Before proceeding, confirm with the user:**
 
 "Do you have:
-- ✅ Test content created (URL or path)?
-- ✅ Content model defined?
+- Test content created (URL or path)?
+- Content model defined?
 
 If not, we need to use the content-driven-development skill first."
 

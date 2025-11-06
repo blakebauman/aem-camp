@@ -235,20 +235,20 @@ async function testResponsive() {
 ## Browser Testing Best Practices
 
 ### DO:
-- ✅ Test all viewport sizes (mobile, tablet, desktop)
-- ✅ Take screenshots for visual validation
-- ✅ Test all block variants in one script
-- ✅ Wait for block decoration before capturing state
-- ✅ Test interactive elements (clicks, forms, etc.)
-- ✅ Show screenshots to humans for feedback
-- ✅ Include screenshots in PRs to help reviewers
+- Test all viewport sizes (mobile, tablet, desktop)
+- Take screenshots for visual validation
+- Test all block variants in one script
+- Wait for block decoration before capturing state
+- Test interactive elements (clicks, forms, etc.)
+- Show screenshots to humans for feedback
+- Include screenshots in PRs to help reviewers
 
 ### DON'T:
-- ❌ Commit throwaway test scripts to the repository
-- ❌ Try to automate visual regression testing (not worth the maintenance)
-- ❌ Write brittle assertions about specific DOM structure
-- ❌ Spend time making these tests maintainable (they're throwaway)
-- ❌ Test the same thing in both unit tests and browser tests
+- ERROR: Commit throwaway test scripts to the repository
+- ERROR: Try to automate visual regression testing (not worth the maintenance)
+- ERROR: Write brittle assertions about specific DOM structure
+- ERROR: Spend time making these tests maintainable (they're throwaway)
+- ERROR: Test the same thing in both unit tests and browser tests
 
 ## Playwright Tips and Tricks
 

@@ -1,7 +1,7 @@
 # Architecture Decision Records
 
 **Last Updated:** 2025-11-06
-**Survives Context Resets:** ✅ Yes - Loaded on session start
+**Survives Context Resets:** Yes - Loaded on session start
 
 This document records significant architectural and design decisions made for this project. Understanding these decisions helps maintain consistency and avoid revisiting resolved questions.
 

@@ -25,7 +25,7 @@ export default async function userPromptSubmit({ prompt, context }) {
       name: 'content-driven-development',
       reason: 'Block development requires content-first approach',
       autoActivate: true,
-      message: '🎯 **Auto-activating Content-Driven Development workflow** for block creation.'
+      message: '**Auto-activating Content-Driven Development workflow** for block creation.'
     });
   }
 
@@ -39,7 +39,7 @@ export default async function userPromptSubmit({ prompt, context }) {
       name: 'content-driven-development',
       reason: 'Block modifications require test content',
       autoActivate: true,
-      message: '🎯 **Auto-activating Content-Driven Development workflow** for block modification.'
+      message: '**Auto-activating Content-Driven Development workflow** for block modification.'
     });
   }
 
@@ -54,7 +54,7 @@ export default async function userPromptSubmit({ prompt, context }) {
       name: 'content-modeling',
       reason: 'Content modeling expertise needed',
       autoActivate: true,
-      message: '📋 **Auto-activating Content Modeling skill** for author-friendly design.'
+      message: '**Auto-activating Content Modeling skill** for author-friendly design.'
     });
   }
 
@@ -69,7 +69,7 @@ export default async function userPromptSubmit({ prompt, context }) {
       name: 'testing-blocks',
       reason: 'Testing guidance needed',
       autoActivate: true,
-      message: '🧪 **Auto-activating Testing skill** for comprehensive validation.'
+      message: '**Auto-activating Testing skill** for comprehensive validation.'
     });
   }
 
@@ -84,7 +84,7 @@ export default async function userPromptSubmit({ prompt, context }) {
       name: 'docs-search',
       reason: 'AEM documentation search needed',
       autoActivate: true,
-      message: '📚 **Auto-activating Documentation Search** for AEM guidance.'
+      message: '**Auto-activating Documentation Search** for AEM guidance.'
     });
   }
 
@@ -99,7 +99,7 @@ export default async function userPromptSubmit({ prompt, context }) {
       name: 'find-content',
       reason: 'Block content search needed',
       autoActivate: false,
-      message: '💡 **Tip:** Use `/find-content <block-name>` to search for pages using a block.'
+      message: '**Tip:** Use `/find-content <block-name>` to search for pages using a block.'
     });
   }
 
@@ -114,7 +114,7 @@ export default async function userPromptSubmit({ prompt, context }) {
       name: 'block-collection-and-party',
       reason: 'Reference implementations needed',
       autoActivate: true,
-      message: '🎨 **Auto-activating Block Collection search** for reference implementations.'
+      message: '**Auto-activating Block Collection search** for reference implementations.'
     });
   }
 
@@ -144,7 +144,7 @@ export default async function userPromptSubmit({ prompt, context }) {
       name: 'content-first-reminder',
       reason: 'Content-first principle enforcement',
       autoActivate: true,
-      message: '⚠️ **Content-First Reminder:** Do you have test content ready? If not, use Content-Driven Development skill first.'
+      message: 'WARNING: **Content-First Reminder:** Do you have test content ready? If not, use Content-Driven Development skill first.'
     });
   }
 

@@ -35,7 +35,7 @@ This structure is created by authors in Google Docs/SharePoint as a table. Your 
 
 ### Good Author Experience
 
-✅ **Clear structure:**
+**Clear structure:**
 ```
 | Card |
 | [Image] |
@@ -44,7 +44,7 @@ This structure is created by authors in Google Docs/SharePoint as a table. Your 
 | Link |
 ```
 
-✅ **Obvious meaning:**
+**Obvious meaning:**
 ```
 | Hero (Dark) |
 | [Background Image] |
@@ -53,7 +53,7 @@ This structure is created by authors in Google Docs/SharePoint as a table. Your 
 | Call to Action |
 ```
 
-✅ **Flexible:**
+**Flexible:**
 ```
 | Cards (Three Up) |
 | [Image] | Title | Text |
@@ -63,14 +63,14 @@ This structure is created by authors in Google Docs/SharePoint as a table. Your 
 
 ### Poor Author Experience
 
-❌ **Cryptic structure:**
+ERROR: **Cryptic structure:**
 ```
 | Block |
 | col1 | col2 | col3 |
 | data1 | data2 | data3 |
 ```
 
-❌ **Developer-focused:**
+ERROR: **Developer-focused:**
 ```
 | Component |
 | className: dark |
@@ -78,7 +78,7 @@ This structure is created by authors in Google Docs/SharePoint as a table. Your 
 | titleText: Hello World |
 ```
 
-❌ **Inflexible:**
+ERROR: **Inflexible:**
 ```
 | Cards |
 | Card 1 Image | Card 1 Title | Card 1 Description |
@@ -504,7 +504,7 @@ Brief description of what this block does and when to use it.
 
 ## Anti-Patterns to Avoid
 
-❌ **Don't:**
+ERROR: **Don't:**
 - Design for developers, not authors
 - Use cryptic field names or structure
 - Require authors to remember complex syntax
@@ -513,7 +513,7 @@ Brief description of what this block does and when to use it.
 - Make common tasks difficult
 - Ignore mobile authoring experience
 
-✅ **Do:**
+**Do:**
 - Design for authors first
 - Use clear, obvious field names
 - Make structure intuitive

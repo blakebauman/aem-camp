@@ -20,7 +20,7 @@ export default {
     const command = options ? `${baseCommand} ${options}` : baseCommand;
 
     const message = [
-      '🚀 **Starting AEM Development Server**',
+      '**Starting AEM Development Server**',
       '',
       `Command: \`${command}\``,
       '',
@@ -30,8 +30,8 @@ export default {
       '- Browser logs: Forwarded to terminal',
       '',
       options.includes('--html-folder') 
-        ? '📁 Using local HTML folder for content'
-        : '🌐 Using remote content from preview/live',
+        ? 'Using local HTML folder for content'
+        : 'Using remote content from preview/live',
       '',
       '**Common Options:**',
       '- `--html-folder drafts` - Use local HTML files',

@@ -1,7 +1,7 @@
 # Troubleshooting Guide
 
 **Last Updated:** 2025-11-06
-**Survives Context Resets:** ✅ Yes - Loaded on session start
+**Survives Context Resets:** Yes - Loaded on session start
 
 This document captures common issues and their solutions. Refer here before debugging from scratch.
 
@@ -240,28 +240,28 @@ This document captures common issues and their solutions. Refer here before debu
 
    **Missing file extension:**
    ```javascript
-   // ❌ Wrong
+   // ERROR: Wrong
    import { something } from './module';
    
-   // ✅ Correct
+   // Correct
    import { something } from './module.js';
    ```
 
    **Unused variables:**
    ```javascript
-   // ❌ Wrong - variable declared but not used
+   // ERROR: Wrong - variable declared but not used
    const unused = 123;
    
-   // ✅ Correct - remove or use
+   // Correct - remove or use
    // (remove if not needed)
    ```
 
    **No-console:**
    ```javascript
-   // ❌ Wrong (in production code)
+   // ERROR: Wrong (in production code)
    console.log('debug');
    
-   // ✅ Correct (if needed, use eslint-disable)
+   // Correct (if needed, use eslint-disable)
    // eslint-disable-next-line no-console
    console.error('Important error:', error);
    ```
@@ -289,12 +289,12 @@ This document captures common issues and their solutions. Refer here before debu
 
    **Selector not scoped:**
    ```css
-   /* ❌ Wrong - global selector */
+   /* ERROR: Wrong - global selector */
    .button {
      color: red;
    }
    
-   /* ✅ Correct - scoped to block */
+   /* Correct - scoped to block */
    .my-block .button {
      color: red;
    }
@@ -302,12 +302,12 @@ This document captures common issues and their solutions. Refer here before debu
 
    **Missing units:**
    ```css
-   /* ❌ Wrong */
+   /* ERROR: Wrong */
    .my-block {
      padding: 10;
    }
    
-   /* ✅ Correct */
+   /* Correct */
    .my-block {
      padding: 10px;
    }

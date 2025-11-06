@@ -308,7 +308,7 @@ gh pr checks --watch
 After completing this workflow:
 1. Delete throwaway browser test scripts
 2. Keep screenshots for PR, then delete
-3. Celebrate passing tests! 🎉
+3. Celebrate passing tests!
 4. Monitor PR for review feedback
 
 Remember: The goal is confidence your code works, not perfection. Follow the workflow, fix what breaks, and ship with confidence.

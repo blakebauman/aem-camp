@@ -23,15 +23,15 @@ Content Driven Development is a mandatory process for AEM Edge Delivery Services
 
 Apply Content Driven Development principles to ALL AEM development tasks:
 
-- ✅ Creating new blocks
-- ✅ Modifying existing blocks (structural or functional changes)
-- ✅ Changes to core decoration functionality
-- ✅ Bug fixes that require validation
-- ✅ Any code that affects how authors create or structure content
+- Creating new blocks
+- Modifying existing blocks (structural or functional changes)
+- Changes to core decoration functionality
+- Bug fixes that require validation
+- Any code that affects how authors create or structure content
 
 Skip CDD only for:
-- ⚠️ Trivial CSS-only styling tweaks (but still identify test content for validation)
-- ⚠️ Configuration changes that don't affect authoring
+- WARNING: Trivial CSS-only styling tweaks (but still identify test content for validation)
+- WARNING: Configuration changes that don't affect authoring
 
 When in doubt, follow the CDD process. The time invested pays dividends in quality and efficiency.
 
@@ -177,11 +177,11 @@ The final phase ensures the implementation works correctly with real content.
 #### Step 3.1: Test with Real Content
 
 **Mandatory testing:**
-- ✅ View test content in local dev environment
-- ✅ Verify all variants render correctly
-- ✅ Check responsive behavior (mobile, tablet, desktop)
-- ✅ Test edge cases revealed by the actual content
-- ✅ Validate accessibility basics (keyboard navigation, screen reader friendly)
+- View test content in local dev environment
+- Verify all variants render correctly
+- Check responsive behavior (mobile, tablet, desktop)
+- Test edge cases revealed by the actual content
+- Validate accessibility basics (keyboard navigation, screen reader friendly)
 
 #### Step 3.2: Run Quality Checks
 
@@ -210,22 +210,22 @@ For other code changes, or for additional testing guidance, invoke the **testing
 #### Step 3.4: PR Preparation
 
 **Before raising a PR, ensure:**
-- ✅ Test content exists in the CMS (not just local HTML)
-- ✅ Test content URL is accessible for PSI checks
-- ✅ All linting passes
-- ✅ Author documentation is updated (if applicable)
+- Test content exists in the CMS (not just local HTML)
+- Test content URL is accessible for PSI checks
+- All linting passes
+- Author documentation is updated (if applicable)
 
 The test content URL will be used as the PR validation link.
 
 ## Anti-Patterns to Avoid
 
 **Common mistakes:**
-- ❌ Starting with code before understanding the content model
-- ❌ Making assumptions about content structure without seeing real examples
-- ❌ Creating developer-friendly but author-hostile content models
-- ❌ Skipping content creation "to save time" (costs more time later)
-- ❌ Testing against imagined content instead of real content
-- ❌ Treating test content creation as separate from development workflow
+- ERROR: Starting with code before understanding the content model
+- ERROR: Making assumptions about content structure without seeing real examples
+- ERROR: Creating developer-friendly but author-hostile content models
+- ERROR: Skipping content creation "to save time" (costs more time later)
+- ERROR: Testing against imagined content instead of real content
+- ERROR: Treating test content creation as separate from development workflow
 
 ## Workflow Summary
 

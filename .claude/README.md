@@ -2,17 +2,17 @@
 
 This directory contains a comprehensive Claude Code infrastructure that solves the "skills don't activate automatically" problem and scales Claude Code for enterprise development.
 
-## 🎯 Core Capabilities
+## Core Capabilities
 
-✅ **Auto-Activating Skills** - Skills trigger automatically based on prompts and actions
-✅ **Specialized Agents** - Complex tasks delegated to expert agents  
-✅ **Smart Hooks** - Workflow automation and best practice enforcement
-✅ **Quick Commands** - Slash commands for instant common task access
-✅ **Persistent Knowledge** - Documentation survives context resets
-✅ **Content-First Enforcement** - Prevents code-before-content mistakes
-✅ **Comprehensive Examples** - Production-ready block implementations
+**Auto-Activating Skills** - Skills trigger automatically based on prompts and actions
+**Specialized Agents** - Complex tasks delegated to expert agents  
+**Smart Hooks** - Workflow automation and best practice enforcement
+**Quick Commands** - Slash commands for instant common task access
+**Persistent Knowledge** - Documentation survives context resets
+**Content-First Enforcement** - Prevents code-before-content mistakes
+**Comprehensive Examples** - Production-ready block implementations
 
-## 🚀 Quick Start
+## Quick Start
 
 ### For Developers
 
@@ -50,7 +50,7 @@ Throughout development:
 - **post-tool-use.js** auto-lints, suggests next steps
 - Agents available for complex task delegation
 
-## 📁 Directory Structure
+## Directory Structure
 
 ```
 .claude/
@@ -96,7 +96,7 @@ Throughout development:
         └── docs/
 ```
 
-## 🎯 Skills (Auto-Activating)
+## Skills (Auto-Activating)
 
 Skills are modular development guides that auto-activate based on patterns.
 
@@ -120,37 +120,37 @@ All skills follow the 500-line rule with progressive disclosure:
 - Load additional context only when needed
 
 **Current sizes:**
-- building-blocks: 199 lines ✅
-- docs-search: 213 lines ✅
-- content-modeling: 234 lines ✅
-- content-driven-development: 294 lines ✅
-- testing-blocks: 295 lines ✅
-- block-collection-and-party: 412 lines ✅
+- building-blocks: 199 lines 
+- docs-search: 213 lines 
+- content-modeling: 234 lines 
+- content-driven-development: 294 lines 
+- testing-blocks: 295 lines 
+- block-collection-and-party: 412 lines 
 
 **See:** Individual skill README files in `skills/*/SKILL.md`
 
-## 🤖 Agents (Specialized Experts)
+## Agents (Specialized Experts)
 
 Agents are autonomous Claude instances with specialized expertise for complex tasks.
 
 ### Available Agents
 
-**🛠️ Block Developer** (`@block-developer`)
+**Block Developer** (`@block-developer`)
 - Complete block development workflows
 - Content modeling → Implementation → Testing
 - Auto-activates: "create block", "build block"
 
-**📋 Content Modeler** (`@content-modeler`)
+**Content Modeler** (`@content-modeler`)
 - Author-friendly content structure design
 - Variant and edge case handling
 - Auto-activates: "content model", "authoring structure"
 
-**🧪 Testing Specialist** (`@testing-specialist`)
+**Testing Specialist** (`@testing-specialist`)
 - Comprehensive testing and QA
 - Unit, browser, linting, performance
 - Auto-activates: "test block", "validate", "PR ready"
 
-**📚 Documentation Expert** (`@docs-expert`)
+**Documentation Expert** (`@docs-expert`)
 - AEM documentation search
 - Block Collection/Party discovery
 - Auto-activates: "how to", "find example"
@@ -178,7 +178,7 @@ System prompt in Markdown...
 
 **See:** `agents/README.md` for detailed agent documentation
 
-## ⚡ Hooks (Auto-Activation System)
+## Hooks (Auto-Activation System)
 
 Hooks automatically trigger at specific workflow points to enforce best practices.
 
@@ -224,7 +224,7 @@ Hooks automatically trigger at specific workflow points to enforce best practice
 
 **See:** `hooks/README.md` for detailed hook documentation
 
-## 💬 Commands (Quick Workflows)
+## Commands (Quick Workflows)
 
 Slash commands provide instant access to common workflows.
 
@@ -262,7 +262,7 @@ Slash commands provide instant access to common workflows.
 
 **See:** `commands/README.md` for detailed command documentation
 
-## 📚 Persistent Documentation
+## Persistent Documentation
 
 Documentation that survives context resets, loaded automatically on session start.
 
@@ -308,7 +308,7 @@ Documentation that survives context resets, loaded automatically on session star
 
 **See:** `docs/README.md` for documentation system details
 
-## 🎨 Examples (Reference Implementations)
+## Examples (Reference Implementations)
 
 Comprehensive blog domain examples demonstrate all patterns and best practices.
 
@@ -350,7 +350,7 @@ Comprehensive blog domain examples demonstrate all patterns and best practices.
 
 **See:** `examples/blog/README.md` for all examples
 
-## 🔧 Configuration
+## Configuration
 
 Infrastructure configured via `.clauderc` in project root:
 
@@ -383,7 +383,7 @@ Infrastructure configured via `.clauderc` in project root:
 }
 ```
 
-## 🎓 Learning Path
+## Learning Path
 
 ### Beginner: Understanding the System
 
@@ -406,7 +406,7 @@ Infrastructure configured via `.clauderc` in project root:
 11. Create custom commands/hooks
 12. Contribute new patterns to `docs/patterns.md`
 
-## 🔍 Troubleshooting
+## Troubleshooting
 
 ### Skills Not Activating
 
@@ -450,7 +450,7 @@ Infrastructure configured via `.clauderc` in project root:
 - `/search-docs <topic>` - Search AEM docs
 - Individual README files in each directory
 
-## 📖 Reference
+## Reference
 
 ### Key Files
 
@@ -481,26 +481,26 @@ Infrastructure configured via `.clauderc` in project root:
 - [Hooks Guide](https://code.claude.com/docs/en/hooks-guide)
 - [Reference Repository](https://github.com/diet103/claude-code-infrastructure-showcase)
 
-## 🎉 Success Criteria
+## Success Criteria
 
 This infrastructure successfully addresses:
 
-✅ **Skills don't activate automatically**
+**Skills don't activate automatically**
 → Solved via `user-prompt-submit.js` hook with pattern matching
 
-✅ **500-line rule with progressive disclosure**
+**500-line rule with progressive disclosure**
 → All skills < 500 lines, resources for details
 
-✅ **Specialized agents for complex tasks**
+**Specialized agents for complex tasks**
 → 4 agents with focused expertise
 
-✅ **Dev docs survive context resets**
+**Dev docs survive context resets**
 → Persistent docs in `.claude/docs/`, loaded on session start
 
-✅ **Comprehensive examples**
+**Comprehensive examples**
 → Blog domain examples with production-ready code
 
-✅ **Scaled for enterprise**
+**Scaled for enterprise**
 → Complete infrastructure, quality gates, automation
 
 ---

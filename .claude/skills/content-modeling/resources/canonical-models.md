@@ -45,10 +45,10 @@ Self-contained blocks using rows or columns as needed for their unique structure
 ```
 
 **Why this works:**
-- ✅ Uses semantic formatting: H1 identifies the heading, paragraphs for body text
-- ✅ Flexible structure: could also work with image and text in columns, or all in one cell
-- ✅ Decoration code can find elements using query selectors regardless of exact layout
-- ✅ Author-friendly: natural content authoring
+- Uses semantic formatting: H1 identifies the heading, paragraphs for body text
+- Flexible structure: could also work with image and text in columns, or all in one cell
+- Decoration code can find elements using query selectors regardless of exact layout
+- Author-friendly: natural content authoring
 
 **Note on flexibility:**
 These variations would also work with proper decoration code:
@@ -66,12 +66,12 @@ These variations would also work with proper decoration code:
 ```
 
 **Why this fails:**
-- ❌ 6 cells in one row (exceeds maximum of 4)
-- ❌ Non-semantic: text split across multiple unlabeled cells
-- ❌ Split related text across cells unnecessarily
-- ❌ Configuration-style variant control in "dark" cell (should use block variant class)
-- ❌ Unpredictable: authors must remember which cell is which
-- ❌ Author-hostile: too many required cells, no semantic formatting
+- ERROR: 6 cells in one row (exceeds maximum of 4)
+- ERROR: Non-semantic: text split across multiple unlabeled cells
+- ERROR: Split related text across cells unnecessarily
+- ERROR: Configuration-style variant control in "dark" cell (should use block variant class)
+- ERROR: Unpredictable: authors must remember which cell is which
+- ERROR: Author-hostile: too many required cells, no semantic formatting
 
 **How to fix:**
 - Simplify to under 4 cells per row
@@ -114,12 +114,12 @@ Each row represents an item, with columns defining the parts of that item. Ideal
 ```
 
 **Why this works:**
-- ✅ Collection model: each row is one card
-- ✅ 2 columns: image and content
-- ✅ Consistent structure across all rows
-- ✅ Semantic formatting: H2 for card title, paragraph text for description, links for CTA
-- ✅ Easy to add/remove cards (add/remove rows)
-- ✅ Within 4-cell maximum
+- Collection model: each row is one card
+- 2 columns: image and content
+- Consistent structure across all rows
+- Semantic formatting: H2 for card title, paragraph text for description, links for CTA
+- Easy to add/remove cards (add/remove rows)
+- Within 4-cell maximum
 
 **Resulting structure:**
 - Each row becomes one card
@@ -143,12 +143,12 @@ Each row represents an item, with columns defining the parts of that item. Ideal
 ```
 
 **Why this fails:**
-- ❌ Mixing configuration row with content rows
-- ❌ Non-semantic: first row should use block variant instead
-- ❌ Each card uses 4 separate rows instead of 1 row with columns
-- ❌ Unpredictable: hard to tell where one card ends and another begins
-- ❌ Author-unfriendly: difficult to add/remove cards
-- ❌ Requires counting rows to understand structure
+- ERROR: Mixing configuration row with content rows
+- ERROR: Non-semantic: first row should use block variant instead
+- ERROR: Each card uses 4 separate rows instead of 1 row with columns
+- ERROR: Unpredictable: hard to tell where one card ends and another begins
+- ERROR: Author-unfriendly: difficult to add/remove cards
+- ERROR: Requires counting rows to understand structure
 
 **How to fix:**
 - Remove config row, use variant: `| Cards (Grid) |`
@@ -178,7 +178,7 @@ Two-column key/value pairs for settings or parameters. Use ONLY for API-driven o
 - API-driven components
 - True behavioral configuration
 
-### ⚠️ Important Warning
+### WARNING: Important Warning
 
 **Do NOT use Configuration model when:**
 - Standalone or Collection model would work
@@ -199,11 +199,11 @@ Configuration models are often overused. Always ask: "Does this truly need dynam
 ```
 
 **Why this works:**
-- ✅ Truly configuration-driven (controls API query)
-- ✅ Two-column key/value pairs
-- ✅ No visual content (pure config)
-- ✅ Controls dynamic behavior (fetch and display blog posts)
-- ✅ Appropriate use case for Configuration model
+- Truly configuration-driven (controls API query)
+- Two-column key/value pairs
+- No visual content (pure config)
+- Controls dynamic behavior (fetch and display blog posts)
+- Appropriate use case for Configuration model
 
 **Resulting behavior:**
 - Fetches 10 most recent posts
@@ -222,11 +222,11 @@ Configuration models are often overused. Always ask: "Does this truly need dynam
 ```
 
 **Why this fails:**
-- ❌ This is static content, not dynamic configuration
-- ❌ Should be Standalone model, not Configuration
-- ❌ "style" and "background" should be block variants
-- ❌ Forces authors to label their own content
-- ❌ More complex than necessary
+- ERROR: This is static content, not dynamic configuration
+- ERROR: Should be Standalone model, not Configuration
+- ERROR: "style" and "background" should be block variants
+- ERROR: Forces authors to label their own content
+- ERROR: More complex than necessary
 
 **How to fix:**
 Use Standalone model with semantic formatting:
@@ -348,14 +348,14 @@ Common issues and how to resolve them quickly.
 ```
 
 **Why this works:**
-- ✅ Authors create natural sections (separated by `---`) with H2 headings and content
-- ✅ Section metadata (`style | tabs`) signals intent to auto-block
-- ✅ Multiple consecutive sections with `style | tabs` metadata get merged into one tabs block
-- ✅ Each section becomes one tab: H2 = tab title, everything else = tab content
-- ✅ No need to understand block syntax
-- ✅ Can mix default content and blocks within tab content
-- ✅ Simplifies complex authoring
-- ✅ Feels "magical" when it works
+- Authors create natural sections (separated by `---`) with H2 headings and content
+- Section metadata (`style | tabs`) signals intent to auto-block
+- Multiple consecutive sections with `style | tabs` metadata get merged into one tabs block
+- Each section becomes one tab: H2 = tab title, everything else = tab content
+- No need to understand block syntax
+- Can mix default content and blocks within tab content
+- Simplifies complex authoring
+- Feels "magical" when it works
 
 ### Good Example: YouTube Embed (Auto-Blocked)
 
@@ -384,12 +384,12 @@ https://www.youtube.com/watch?v=dQw4w9WgXcQ
 ```
 
 **Why this works:**
-- ✅ Authors just paste image and URL in sequence
-- ✅ Pattern detection creates the embed block
-- ✅ Image immediately preceding YouTube URL becomes the preview/poster image
-- ✅ If no image, block still works with just the URL
-- ✅ Minimal author effort
-- ✅ Consistent behavior
+- Authors just paste image and URL in sequence
+- Pattern detection creates the embed block
+- Image immediately preceding YouTube URL becomes the preview/poster image
+- If no image, block still works with just the URL
+- Minimal author effort
+- Consistent behavior
 
 ### When NOT to Use Auto-Blocked
 
@@ -423,13 +423,13 @@ When in doubt, start with Standalone or Collection - they're simpler and more au
 
 **Using Configuration when Standalone/Collection would work:**
 ```markdown
-❌ BAD (unnecessary config)
+ERROR: BAD (unnecessary config)
 | Card |
 |------|
 | image | hero.jpg |
 | title | Welcome |
 
-✅ GOOD (Standalone)
+GOOD (Standalone)
 | Card |
 |------|
 | ![Welcome](hero.jpg) |
@@ -438,10 +438,10 @@ When in doubt, start with Standalone or Collection - they're simpler and more au
 
 **Using Standalone when Collection would work:**
 ```markdown
-❌ BAD (repeating standalone pattern)
+ERROR: BAD (repeating standalone pattern)
 Multiple separate blocks for each card
 
-✅ GOOD (Collection)
+GOOD (Collection)
 | Cards |
 |-------|
 | ![Card 1](img1.jpg) | **Title 1** |
@@ -450,14 +450,14 @@ Multiple separate blocks for each card
 
 **Over-engineering Auto-Blocked:**
 ```markdown
-❌ BAD (complex pattern for rare use case)
+ERROR: BAD (complex pattern for rare use case)
 Auto-detecting "testimonial quotes" by looking for:
 - Italic paragraphs
 - Followed by bold text
 - In specific section types
 Only appears 2-3 times on entire site, not worth the complexity
 
-✅ GOOD (explicit block for clarity)
+GOOD (explicit block for clarity)
 | Blockquote |
 |------------|
 | This product changed how we work. Absolutely essential. |

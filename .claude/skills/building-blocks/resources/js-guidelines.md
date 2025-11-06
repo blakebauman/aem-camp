@@ -26,7 +26,7 @@ export default async function decorate(block) {
 
 ### Good Patterns
 
-**✅ Re-use existing DOM elements when possible:**
+**Re-use existing DOM elements when possible:**
 ```javascript
 // Good - re-use the existing element
 const paragraph = block.querySelector('p');
@@ -45,25 +45,25 @@ newP.textContent = text;
 // This throws away the original <p> and creates a new one
 ```
 
-**✅ Use semantic HTML:**
+**Use semantic HTML:**
 ```javascript
 const blockquote = document.createElement('blockquote');
 const figure = document.createElement('figure');
 ```
 
-**✅ Use spread operator for multiple elements:**
+**Use spread operator for multiple elements:**
 ```javascript
 const pars = block.querySelectorAll('p');
 const container = document.createElement('div');
 container.append(...pars);
 ```
 
-**✅ Replace content efficiently:**
+**Replace content efficiently:**
 ```javascript
 block.replaceChildren(newElement);
 ```
 
-**✅ Query within the block scope:**
+**Query within the block scope:**
 ```javascript
 // Good - scoped to block
 const links = block.querySelectorAll('a');
@@ -74,7 +74,7 @@ const links = document.querySelectorAll('a');
 
 ### Bad Patterns
 
-**❌ Don't use innerHTML for complex structures:**
+**ERROR: Don't use innerHTML for complex structures:**
 ```javascript
 // Bad - hard to maintain, XSS risk
 block.innerHTML = '<div class="wrapper"><p>Text</p></div>';
@@ -88,7 +88,7 @@ wrapper.append(p);
 block.append(wrapper);
 ```
 
-**❌ Don't mutate elements from other blocks:**
+**ERROR: Don't mutate elements from other blocks:**
 ```javascript
 // Bad - affects global state
 const header = document.querySelector('header');
@@ -98,7 +98,7 @@ header.classList.add('modified-by-my-block');
 block.classList.add('has-special-behavior');
 ```
 
-**❌ Don't leave temporary DOM elements:**
+**ERROR: Don't leave temporary DOM elements:**
 ```javascript
 // Bad - leaves empty paragraphs
 const text = block.querySelector('p').textContent;

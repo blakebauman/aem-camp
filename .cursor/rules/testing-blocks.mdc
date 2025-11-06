@@ -508,7 +508,7 @@ npm run lint:fix
 
 ## Anti-Patterns to Avoid
 
-❌ **Don't:**
+ERROR: **Don't:**
 - Skip manual testing
 - Ignore linting errors
 - Test without real content
@@ -517,7 +517,7 @@ npm run lint:fix
 - Skip accessibility checks
 - Forget PR test URL
 
-✅ **Do:**
+**Do:**
 - Always manual test first
 - Fix all linting errors
 - Test with real content

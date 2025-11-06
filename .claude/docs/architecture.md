@@ -1,7 +1,7 @@
 # AEM Edge Delivery Services Architecture
 
 **Last Updated:** 2025-11-06
-**Survives Context Resets:** ✅ Yes - Loaded on session start
+**Survives Context Resets:** Yes - Loaded on session start
 
 ## Project Overview
 
@@ -264,7 +264,7 @@ Mobile-first with standard breakpoints:
 
 ## Anti-Patterns to Avoid
 
-❌ **Don't:**
+ERROR: **Don't:**
 - Modify `scripts/aem.js` (core library)
 - Start coding before content exists
 - Create developer-friendly but author-hostile models
@@ -274,7 +274,7 @@ Mobile-first with standard breakpoints:
 - Use complex build processes
 - Add unnecessary dependencies
 
-✅ **Do:**
+**Do:**
 - Follow Content-Driven Development
 - Design for authors
 - Keep blocks simple and focused

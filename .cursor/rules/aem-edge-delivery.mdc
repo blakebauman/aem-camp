@@ -524,25 +524,25 @@ Automatically purge CDN cache when content is published via AEM Code Sync.
 
 ### Don't Do This
 
-- ❌ Loading large JavaScript libraries unnecessarily
-- ❌ Blocking rendering with synchronous scripts
-- ❌ Using jQuery or other heavy frameworks
-- ❌ Inline styles that override system styles
-- ❌ Creating blocks that aren't reusable
-- ❌ Hardcoding content that should be authored
-- ❌ Ignoring mobile viewport
-- ❌ Forgetting to test Lighthouse scores
+- ERROR: Loading large JavaScript libraries unnecessarily
+- ERROR: Blocking rendering with synchronous scripts
+- ERROR: Using jQuery or other heavy frameworks
+- ERROR: Inline styles that override system styles
+- ERROR: Creating blocks that aren't reusable
+- ERROR: Hardcoding content that should be authored
+- ERROR: Ignoring mobile viewport
+- ERROR: Forgetting to test Lighthouse scores
 
 ### Do This Instead
 
-- ✅ Use native browser APIs
-- ✅ Load scripts asynchronously
-- ✅ Embrace progressive enhancement
-- ✅ Use CSS custom properties for theming
-- ✅ Create flexible, configurable blocks
-- ✅ Keep content in documents
-- ✅ Mobile-first responsive design
-- ✅ Continuously monitor performance
+- Use native browser APIs
+- Load scripts asynchronously
+- Embrace progressive enhancement
+- Use CSS custom properties for theming
+- Create flexible, configurable blocks
+- Keep content in documents
+- Mobile-first responsive design
+- Continuously monitor performance
 
 ## Quick Reference Commands
 

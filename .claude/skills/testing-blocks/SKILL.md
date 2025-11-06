@@ -16,11 +16,11 @@ This skill guides you through testing code changes in AEM Edge Delivery Services
 ## When to Use This Skill
 
 Use this skill:
-- ✅ After implementing or modifying blocks
-- ✅ After changes to core scripts (scripts.js, delayed.js, aem.js)
-- ✅ After style changes (styles.css, lazy-styles.css)
-- ✅ After configuration changes that affect functionality
-- ✅ Before opening any pull request with code changes
+- After implementing or modifying blocks
+- After changes to core scripts (scripts.js, delayed.js, aem.js)
+- After style changes (styles.css, lazy-styles.css)
+- After configuration changes that affect functionality
+- Before opening any pull request with code changes
 
 This skill should be automatically invoked by the **building-blocks** skill after implementation is complete.
 
@@ -30,7 +30,7 @@ This skill should be automatically invoked by the **building-blocks** skill afte
 
 ### Keeper Tests (High Value, Worth Maintaining)
 
-✅ **Write unit tests for:**
+**Write unit tests for:**
 - Logic-heavy utility functions used across multiple blocks
 - Data processing and transformation logic
 - API integrations and external service interactions
@@ -41,7 +41,7 @@ These tests provide lasting value because they catch regressions in reused code,
 
 ### Throwaway Tests (Lower Value, Use Once)
 
-⚠️ **Use browser tests for:**
+WARNING: **Use browser tests for:**
 - Block decoration logic (DOM transformations)
 - Specific DOM structures or UI layouts
 - Visual appearance validation

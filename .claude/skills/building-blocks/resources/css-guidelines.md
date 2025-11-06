@@ -4,7 +4,7 @@
 
 **All CSS selectors must be scoped to the block.** This is critical to prevent style leakage between blocks.
 
-**✅ Good - scoped to block:**
+**Good - scoped to block:**
 ```css
 main .my-block {
   padding: 1rem;
@@ -15,7 +15,7 @@ main .my-block h2 {
 }
 ```
 
-**❌ Bad - not scoped:**
+**ERROR: Bad - not scoped:**
 ```css
 /* This will affect ALL h2 elements on the page */
 h2 {
@@ -33,17 +33,17 @@ h2 {
 - This ensures styles only apply within your block
 - Use additional classes for sub-elements within the block
 
-**⚠️ Special note on `-wrapper` and `-container` classes:**
+**WARNING: Special note on `-wrapper` and `-container` classes:**
 
 The platform automatically adds `.{block-name}-wrapper` and `.{block-name}-container` divs *outside* your block. If you need to style elements with these class names *inside* your block, you must scope them carefully:
 
 ```css
-/* ❌ Bad - will affect the wrapper OUTSIDE your block */
+/* ERROR: Bad - will affect the wrapper OUTSIDE your block */
 main .my-block-wrapper {
   padding: 2rem;
 }
 
-/* ✅ Good - only affects wrappers INSIDE your block */
+/* Good - only affects wrappers INSIDE your block */
 main .my-block .my-block-wrapper {
   padding: 2rem;
 }
@@ -219,7 +219,7 @@ main .my-block {
 
 Avoid overly specific selectors:
 
-**✅ Good - low specificity:**
+**Good - low specificity:**
 ```css
 main .my-block .item {
   padding: 1rem;
@@ -230,7 +230,7 @@ main .my-block .item-title {
 }
 ```
 
-**❌ Bad - high specificity:**
+**ERROR: Bad - high specificity:**
 ```css
 main .my-block div div div.item {
   padding: 1rem;
@@ -368,7 +368,7 @@ main .my-block .truncated {
 
 ## Anti-Patterns to Avoid
 
-**❌ Don't use !important:**
+**ERROR: Don't use !important:**
 ```css
 /* Avoid this */
 main .my-block {
@@ -378,7 +378,7 @@ main .my-block {
 /* Fix specificity issues properly instead */
 ```
 
-**❌ Don't style elements outside your block:**
+**ERROR: Don't style elements outside your block:**
 ```css
 /* Bad - modifies header globally */
 main .my-block {
@@ -390,7 +390,7 @@ header {
 }
 ```
 
-**❌ Don't hardcode values when variables exist:**
+**ERROR: Don't hardcode values when variables exist:**
 ```css
 /* Bad */
 main .my-block {
@@ -405,7 +405,7 @@ main .my-block {
 }
 ```
 
-**❌ Don't use absolute positioning for layout:**
+**ERROR: Don't use absolute positioning for layout:**
 ```css
 /* Prefer flexbox or grid for layout */
 /* Use absolute positioning only for visual effects */

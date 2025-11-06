@@ -15,11 +15,11 @@ description: Content-first development workflow for AEM Edge Delivery Services
 
 Apply CDD to ALL AEM development tasks:
 
-- ✅ Creating new blocks
-- ✅ Modifying existing blocks
-- ✅ Changes to core decoration functionality
-- ✅ Bug fixes requiring validation
-- ✅ Any code affecting author content structure
+- Creating new blocks
+- Modifying existing blocks
+- Changes to core decoration functionality
+- Bug fixes requiring validation
+- Any code affecting author content structure
 
 Skip only for trivial CSS-only tweaks or config changes.
 
@@ -123,7 +123,7 @@ See `.claude/skills/content-driven-development/resources/html-structure.md` for 
 
 ## Anti-Patterns to Avoid
 
-❌ **Don't:**
+ERROR: **Don't:**
 - Start with code before understanding content model
 - Assume content structure without real examples
 - Create developer-friendly but author-hostile models
@@ -131,7 +131,7 @@ See `.claude/skills/content-driven-development/resources/html-structure.md` for 
 - Test against imagined content
 - Treat test content as separate from development
 
-✅ **Do:**
+**Do:**
 - Always create/find test content first
 - Design for authors, not developers
 - Use real content to drive development

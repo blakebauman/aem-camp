@@ -6,7 +6,7 @@
 
 These documents are automatically loaded on session start via the `session-start.js` hook, ensuring critical project knowledge is always available.
 
-### 📐 `architecture.md`
+### `architecture.md`
 **Complete system architecture and overview**
 
 Contains:
@@ -26,7 +26,7 @@ Contains:
 
 ---
 
-### 🎨 `patterns.md`
+### `patterns.md`
 **Common code patterns and solutions**
 
 Contains:
@@ -48,7 +48,7 @@ Contains:
 
 ---
 
-### 📋 `decisions.md`
+### `decisions.md`
 **Architecture Decision Records (ADRs)**
 
 Contains:
@@ -62,7 +62,7 @@ Contains:
 
 ---
 
-### 🔧 `troubleshooting.md`
+### `troubleshooting.md`
 **Common issues and solutions**
 
 Contains:
@@ -92,22 +92,22 @@ The `session-start.js` hook loads these documents automatically when Claude Code
 
 ### Benefits
 
-✅ **Survives Context Resets**
+**Survives Context Resets**
 - Knowledge persists across conversations
 - No need to re-explain architecture
 - Faster recovery from resets
 
-✅ **Single Source of Truth**
+**Single Source of Truth**
 - Consistent information
 - One place to update
 - No conflicting guidance
 
-✅ **Progressive Disclosure**
+**Progressive Disclosure**
 - Main content loaded automatically
 - Details available when needed
 - Efficient context usage
 
-✅ **Living Documentation**
+**Living Documentation**
 - Updated as project evolves
 - Captures real decisions and patterns
 - Reflects current state

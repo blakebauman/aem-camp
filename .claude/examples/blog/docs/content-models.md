@@ -322,18 +322,18 @@ Count can be auto-calculated or omitted.
 ### Content Quality
 
 **DO:**
-- ✅ Use real, meaningful content
-- ✅ Provide complete required fields
-- ✅ Test with edge cases (long titles, etc.)
-- ✅ Include descriptive alt text
-- ✅ Use consistent date formats
+- Use real, meaningful content
+- Provide complete required fields
+- Test with edge cases (long titles, etc.)
+- Include descriptive alt text
+- Use consistent date formats
 
 **DON'T:**
-- ❌ Use "lorem ipsum" placeholder text
-- ❌ Leave required fields empty
-- ❌ Use overly long titles (>100 chars)
-- ❌ Forget alt text on images
-- ❌ Use ambiguous link text
+- ERROR: Use "lorem ipsum" placeholder text
+- ERROR: Leave required fields empty
+- ERROR: Use overly long titles (>100 chars)
+- ERROR: Forget alt text on images
+- ERROR: Use ambiguous link text
 
 ---
 

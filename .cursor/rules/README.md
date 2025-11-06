@@ -8,16 +8,16 @@ The `.claude/` directory contains a sophisticated development infrastructure des
 
 ## Mapping: Claude → Cursor
 
-### What Translates Well ✅
+### What Translates Well 
 
 | Claude System | Cursor Equivalent | Status |
 |---------------|-------------------|--------|
-| **Skills** (development guides) | `.mdc` rule files | ✅ Created |
-| **Docs** (persistent knowledge) | `.mdc` rule files | ✅ Created |
-| **Patterns** (code examples) | `.mdc` rule files | ✅ Created |
-| **Decisions** (ADRs) | `.mdc` rule files | ✅ Created |
+| **Skills** (development guides) | `.mdc` rule files | Created |
+| **Docs** (persistent knowledge) | `.mdc` rule files | Created |
+| **Patterns** (code examples) | `.mdc` rule files | Created |
+| **Decisions** (ADRs) | `.mdc` rule files | Created |
 
-### What Doesn't Translate ❌
+### What Doesn't Translate ERROR: 
 
 | Claude System | Why Not Applicable |
 |---------------|-------------------|
@@ -35,13 +35,13 @@ These rules are always active and provide foundational knowledge:
 #### `aem-edge-delivery.mdc`
 - **Source**: Original Cursor rule + Updated with rule navigation
 - **Purpose**: Quick reference for common AEM tasks, coding standards, essential commands
-- **Always Applied**: ✅ Yes
+- **Always Applied**: Yes
 - **Key Feature**: Includes navigation to all specialized rules at the top
 
 #### `architecture.mdc`
 - **Source**: `.claude/docs/architecture.md`
 - **Purpose**: Complete system architecture, directory structure, deployment pipeline
-- **Always Applied**: ✅ Yes
+- **Always Applied**: Yes
 
 ### Context-Specific Rules (Apply as Needed)
 
@@ -51,37 +51,37 @@ These rules provide detailed guidance for specific tasks:
 - **Source**: `.claude/skills/content-driven-development/SKILL.md`
 - **Purpose**: Mandatory content-first development workflow
 - **When to Use**: All development tasks (blocks, core functionality, modifications)
-- **Always Applied**: ❌ No (apply when needed)
+- **Always Applied**: ERROR: No (apply when needed)
 
 #### `building-blocks.mdc`
 - **Source**: `.claude/skills/building-blocks/SKILL.md`
 - **Purpose**: Block implementation patterns, decoration, styling
 - **When to Use**: Creating or modifying blocks
-- **Always Applied**: ❌ No (apply when building blocks)
+- **Always Applied**: ERROR: No (apply when building blocks)
 
 #### `content-modeling.mdc`
 - **Source**: `.claude/skills/content-modeling/SKILL.md`
 - **Purpose**: Designing author-friendly content structures
 - **When to Use**: Designing content models for new/modified blocks
-- **Always Applied**: ❌ No (apply when modeling content)
+- **Always Applied**: ERROR: No (apply when modeling content)
 
 #### `testing-blocks.mdc`
 - **Source**: `.claude/skills/testing-blocks/SKILL.md`
 - **Purpose**: Testing strategies, quality assurance, PR preparation
 - **When to Use**: Testing code, preparing PRs
-- **Always Applied**: ❌ No (apply when testing)
+- **Always Applied**: ERROR: No (apply when testing)
 
 #### `patterns.mdc`
 - **Source**: `.claude/docs/patterns.md`
 - **Purpose**: Common code patterns and solutions
 - **When to Use**: Reference for common implementations
-- **Always Applied**: ❌ No (reference as needed)
+- **Always Applied**: ERROR: No (reference as needed)
 
 #### `decisions.mdc`
 - **Source**: `.claude/docs/decisions.md`
 - **Purpose**: Architecture Decision Records (ADRs), rationale for key decisions
 - **When to Use**: Understanding why things are the way they are
-- **Always Applied**: ❌ No (reference for context)
+- **Always Applied**: ERROR: No (reference for context)
 
 ## How to Use Cursor Rules
 

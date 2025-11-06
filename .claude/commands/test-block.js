@@ -20,7 +20,7 @@ export default {
     if (!blockName) {
       return {
         success: false,
-        message: '❌ Please provide a block name.\n\nUsage: `/test-block <block-name>`\n\nExample: `/test-block hero`'
+        message: 'ERROR: Please provide a block name.\n\nUsage: `/test-block <block-name>`\n\nExample: `/test-block hero`'
       };
     }
 
@@ -30,17 +30,17 @@ export default {
     if (!fs.existsSync(blockPath)) {
       return {
         success: false,
-        message: `❌ Block "${blockName}" not found at ${blockPath}/\n\nAvailable blocks:\n${listAvailableBlocks()}`
+        message: `ERROR: Block "${blockName}" not found at ${blockPath}/\n\nAvailable blocks:\n${listAvailableBlocks()}`
       };
     }
 
     // Check for test content
     const testContentReminder = context.testContentUrl 
       ? `**Test Content:** ${context.testContentUrl}`
-      : '⚠️ **Test Content URL not set** - You\'ll need to provide this for validation.';
+      : 'WARNING: **Test Content URL not set** - You\'ll need to provide this for validation.';
 
     const message = [
-      `🧪 **Starting Comprehensive Testing for: \`${blockName}\`**`,
+      `**Starting Comprehensive Testing for: \`${blockName}\`**`,
       '',
       testContentReminder,
       '',

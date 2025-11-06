@@ -6,11 +6,11 @@ This project is a website built with Edge Delivery Services in Adobe Experience 
 
 This project uses a comprehensive Claude Code infrastructure for scaled enterprise development. The system includes:
 
-- **🎯 Skills** - Modular development guidance with auto-activation
-- **🤖 Agents** - Specialized AI for complex tasks
-- **⚡ Hooks** - Automatic workflow triggers and validations
-- **💬 Commands** - Quick slash commands for common tasks
-- **📚 Persistent Docs** - Knowledge that survives context resets
+- **Skills** - Modular development guidance with auto-activation
+- **Agents** - Specialized AI for complex tasks
+- **Hooks** - Automatic workflow triggers and validations
+- **Commands** - Quick slash commands for common tasks
+- **Persistent Docs** - Knowledge that survives context resets
 
 ### Quick Start
 
@@ -89,22 +89,22 @@ Complex tasks can be delegated to specialized agents in `.claude/agents/`. Agent
 
 ### Available Agents
 
-**🛠️ Block Developer** (`@block-developer`)
+**Block Developer** (`@block-developer`)
 - Complete block development workflows
 - Content modeling → Implementation → Testing
 - Auto-activates on: "create block", "build block", "implement block"
 
-**📋 Content Modeler** (`@content-modeler`)
+**Content Modeler** (`@content-modeler`)
 - Author-friendly content structure design
 - Variant and edge case handling
 - Auto-activates on: "content model", "authoring structure"
 
-**🧪 Testing Specialist** (`@testing-specialist`)
+**Testing Specialist** (`@testing-specialist`)
 - Comprehensive testing and QA
 - Unit tests, browser tests, linting, performance
 - Auto-activates on: "test block", "validate changes", "PR ready"
 
-**📚 Documentation Expert** (`@docs-expert`)
+**Documentation Expert** (`@docs-expert`)
 - AEM documentation search
 - Block Collection/Party discovery
 - Auto-activates on: "how to", "find example", "reference"
@@ -149,10 +149,10 @@ Hooks automatically trigger at specific workflow points to enforce best practice
 
 ### Hook Benefits
 
-✅ **Auto-activation** - Skills activate when relevant
-✅ **Quality gates** - Prevents common mistakes
-✅ **Workflow guidance** - Suggests next steps
-✅ **Context preservation** - Maintains state across operations
+**Auto-activation** - Skills activate when relevant
+**Quality gates** - Prevents common mistakes
+**Workflow guidance** - Suggests next steps
+**Context preservation** - Maintains state across operations
 
 **See:** `.claude/hooks/README.md` for detailed hook documentation.
 
@@ -183,10 +183,10 @@ Critical project knowledge is stored in `.claude/docs/` and loaded automatically
 
 ### Available Documentation
 
-📐 **`architecture.md`** - Complete system architecture, directory structure, key patterns
-🎨 **`patterns.md`** - Common code patterns and solutions for blocks
-📋 **`decisions.md`** - Architecture Decision Records (ADRs) explaining why things are the way they are
-🔧 **`troubleshooting.md`** - Common issues and their solutions
+**`architecture.md`** - Complete system architecture, directory structure, key patterns
+**`patterns.md`** - Common code patterns and solutions for blocks
+**`decisions.md`** - Architecture Decision Records (ADRs) explaining why things are the way they are
+**`troubleshooting.md`** - Common issues and their solutions
 
 These docs are automatically loaded when you start a session, providing:
 - Consistent understanding across sessions

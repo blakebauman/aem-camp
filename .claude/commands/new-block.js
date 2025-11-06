@@ -21,7 +21,7 @@ export default {
     if (!blockName) {
       return {
         success: false,
-        message: '❌ Please provide a block name.\n\nUsage: `/new-block <block-name> [description]`\n\nExample: `/new-block hero "Hero banner with image"`'
+        message: 'ERROR: Please provide a block name.\n\nUsage: `/new-block <block-name> [description]`\n\nExample: `/new-block hero "Hero banner with image"`'
       };
     }
 
@@ -30,7 +30,7 @@ export default {
     if (!validNamePattern.test(blockName)) {
       return {
         success: false,
-        message: `❌ Invalid block name: "${blockName}"\n\nBlock names must:\n- Start with lowercase letter\n- Contain only lowercase letters, numbers, and hyphens\n- Use kebab-case (e.g., "blog-post", "hero-banner")`
+        message: `ERROR: Invalid block name: "${blockName}"\n\nBlock names must:\n- Start with lowercase letter\n- Contain only lowercase letters, numbers, and hyphens\n- Use kebab-case (e.g., "blog-post", "hero-banner")`
       };
     }
 
@@ -40,24 +40,24 @@ export default {
     if (fs.existsSync(blockPath)) {
       return {
         success: false,
-        message: `❌ Block "${blockName}" already exists at ${blockPath}/\n\nUse a different name or modify the existing block.`
+        message: `ERROR: Block "${blockName}" already exists at ${blockPath}/\n\nUse a different name or modify the existing block.`
       };
     }
 
     // Prepare workflow message
     const message = [
-      `🎯 **Starting Content-Driven Development for: \`${blockName}\`**`,
+      `**Starting Content-Driven Development for: \`${blockName}\`**`,
       '',
       description ? `**Description:** ${description}` : '',
       '',
       '**Workflow Steps:**',
-      '1. ✅ Determine if test content exists or create it',
-      '2. ✅ Design author-friendly content model',
-      '3. ✅ Find similar blocks for reference patterns',
-      '4. ✅ Implement block decoration (JavaScript)',
-      '5. ✅ Add responsive styles (CSS)',
-      '6. ✅ Test implementation',
-      '7. ✅ Validate with linting',
+      '1. Determine if test content exists or create it',
+      '2. Design author-friendly content model',
+      '3. Find similar blocks for reference patterns',
+      '4. Implement block decoration (JavaScript)',
+      '5. Add responsive styles (CSS)',
+      '6. Test implementation',
+      '7. Validate with linting',
       '',
       '**Next Step:** I\'ll guide you through creating test content first.',
       '',

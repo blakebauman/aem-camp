@@ -43,7 +43,7 @@ export default async function sessionStart({ workspaceRoot, context }) {
   // Discover skills
   initMessages.push({
     type: 'info',
-    message: '🎯 **Skills Discovered**',
+    message: '**Skills Discovered**',
     details: [
       'content-driven-development',
       'building-blocks',
@@ -97,10 +97,10 @@ export default async function sessionStart({ workspaceRoot, context }) {
     type: 'welcome',
     message: '👋 **AEM Edge Delivery Services Development Session Started**',
     details: [
-      `📁 Project: AEM Camp`,
-      `🎯 ${persistentDocs.length} persistent docs loaded`,
-      `⚡ Content-Driven Development enforced`,
-      `🔧 Auto-activating skills enabled`
+      `Project: AEM Camp`,
+      `${persistentDocs.length} persistent docs loaded`,
+      `Content-Driven Development enforced`,
+      `Auto-activating skills enabled`
     ]
   });
 
