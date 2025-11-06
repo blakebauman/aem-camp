@@ -1,0 +1,44 @@
+{
+  "project": {
+    "name": "AEM Edge Delivery Services - Camp",
+    "description": "Adobe Experience Manager Edge Delivery Services project with content-driven development workflow",
+    "type": "web-application"
+  },
+  "hooks": {
+    "enabled": true,
+    "directory": ".claude/hooks"
+  },
+  "agents": {
+    "enabled": true,
+    "directory": ".claude/agents"
+  },
+  "commands": {
+    "enabled": true,
+    "directory": ".claude/commands"
+  },
+  "skills": {
+    "enabled": true,
+    "directory": ".claude/skills",
+    "autoDiscovery": true
+  },
+  "docs": {
+    "directory": ".claude/docs",
+    "persistAcrossContexts": true
+  },
+  "development": {
+    "server": {
+      "command": "aem up",
+      "url": "http://localhost:3000",
+      "autoStart": false
+    },
+    "linting": {
+      "autoFix": true,
+      "runOnSave": false
+    }
+  },
+  "contentDriven": {
+    "enforceContentFirst": true,
+    "testContentRequired": true
+  }
+}
+
