@@ -1,0 +1,548 @@
+---
+alwaysApply: true
+description: Adobe AEM Edge Delivery Services
+---
+
+# Adobe AEM Edge Delivery Services - Cursor Rules
+
+## Project Overview
+
+This is an Adobe Experience Manager (AEM) Edge Delivery Services project using the AEM boilerplate architecture. The project emphasizes web performance, semantic HTML, and progressive enhancement.
+
+## Architecture Principles
+
+### Core Philosophy
+
+- **Performance First**: Always maintain 100/100 Lighthouse scores (Performance, Accessibility, Best Practices, SEO)
+- **Progressive Enhancement**: Content and functionality should work without JavaScript, enhanced with JS
+- **Semantic HTML**: Use proper semantic markup before adding styles or scripts
+- **Mobile First**: Design and develop for mobile, then enhance for desktop
+- **Edge Delivery**: Content is delivered from the edge for optimal performance
+
+### Project Structure
+
+```
+/blocks/           # Reusable UI components (cards, hero, header, footer, etc.)
+/scripts/          # Core scripts (aem.js, scripts.js, delayed.js)
+/styles/           # Global styles (styles.css, fonts.css, lazy-styles.css)
+/icons/            # SVG icons
+/fonts/            # Web fonts
+```
+
+## Block Development Guidelines
+
+### Block Architecture
+
+- Each block lives in `/blocks/{block-name}/` directory
+- Each block has its own CSS and JS files: `{block-name}.css` and `{block-name}.js`
+- Blocks are automatically loaded based on their presence in the DOM
+- Block names use kebab-case (e.g., `cards-block`, `hero-section`)
+
+### Block JavaScript Pattern
+
+```javascript
+// blocks/{block-name}/{block-name}.js
+import { createOptimizedPicture } from '../../scripts/aem.js';
+
+export default function decorate(block) {
+  // Transform block DOM structure
+  // Add event listeners
+  // Initialize functionality
+}
+```
+
+### Block CSS Pattern
+
+- Use BEM-like naming: `.block-name`, `.block-name__element`, `.block-name--modifier`
+- Scope all styles to the block class
+- Use CSS custom properties defined in `/styles/styles.css`
+- Ensure responsive design with mobile-first approach
+
+### Block Creation Checklist
+
+1. Create directory: `/blocks/{block-name}/`
+2. Create `{block-name}.js` with `export default function decorate(block)`
+3. Create `{block-name}.css` with scoped styles
+4. Import utilities from `../../scripts/aem.js` as needed
+5. Test on mobile and desktop viewports
+6. Validate Lighthouse scores remain 100
+
+## Core AEM.js Utilities
+
+### Always use these helper functions
+
+- `createOptimizedPicture(src, alt, eager, breakpoints)` - Create responsive, optimized images
+- `decorateButtons(element)` - Auto-style links as buttons
+- `decorateIcons(element, prefix)` - Convert `.icon` spans to SVG images
+- `loadCSS(href)` - Dynamically load CSS files
+- `loadScript(src, attrs)` - Dynamically load JS files
+- `getMetadata(name)` - Retrieve meta tag values
+- `buildBlock(blockName, content)` - Programmatically create blocks
+- `readBlockConfig(block)` - Extract configuration from block structure
+- `toClassName(name)` - Sanitize strings to class names
+- `toCamelCase(name)` - Convert to camelCase
+- `fetchPlaceholders(prefix)` - Get i18n placeholders
+
+### Loading Lifecycle
+
+1. **Eager** (`loadEager`): Critical above-fold content, LCP elements
+2. **Lazy** (`loadLazy`): Below-fold sections, header, footer
+3. **Delayed** (`loadDelayed`): Analytics, tracking, non-essential features (3s delay)
+
+## JavaScript Standards
+
+### ES6+ Modern Syntax
+
+- Use ES6 modules with `import`/`export`
+- Use arrow functions where appropriate
+- Use `const` and `let` (never `var`)
+- Use template literals for string interpolation
+- Use destructuring for cleaner code
+
+### DOM Manipulation
+
+- Use modern DOM APIs: `querySelector`, `querySelectorAll`, `classList`, `dataset`
+- Prefer `Element.append()` over `appendChild()`
+- Use `element.replaceWith()` for replacements
+- Use spread operator `[...nodeList]` to convert NodeLists to arrays
+
+### Async/Await Pattern
+
+```javascript
+async function loadData() {
+  try {
+    const response = await fetch('/data.json');
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error loading data:', error);
+  }
+}
+```
+
+### Event Listeners
+
+- Use named functions for event handlers when possible
+- Clean up listeners when needed
+- Use event delegation for dynamic content
+
+## CSS Standards
+
+### CSS Custom Properties
+
+Always use CSS variables defined in `:root`:
+
+- Colors: `--background-color`, `--text-color`, `--link-color`, `--dark-color`, `--light-color`
+- Fonts: `--body-font-family`, `--heading-font-family`
+- Sizes: `--body-font-size-m/s/xs`, `--heading-font-size-xxl/xl/l/m/s/xs`
+- Layout: `--nav-height`
+
+### Responsive Design
+
+```css
+/* Mobile first - default styles */
+.block { 
+  padding: 16px; 
+}
+
+/* Desktop enhancement */
+@media (width >= 900px) {
+  .block { 
+    padding: 32px; 
+  }
+}
+```
+
+### Modern CSS Features
+
+- Use logical properties: `margin-block`, `padding-inline`
+- Use `gap` for flexbox/grid spacing
+- Use `clamp()` for fluid typography
+- Avoid `!important` unless absolutely necessary
+
+## Image Optimization
+
+### Always Use createOptimizedPicture
+
+```javascript
+// Generates WebP with fallbacks, multiple breakpoints
+const picture = createOptimizedPicture(
+  img.src, 
+  img.alt, 
+  false, // eager loading (true for LCP images)
+  [{ media: '(min-width: 600px)', width: '2000' }, { width: '750' }]
+);
+```
+
+### Image Loading Strategy
+
+- **Eager**: First visible image (LCP candidate)
+- **Lazy**: All other images (default)
+- Use appropriate `width` parameters for each breakpoint
+- Always provide meaningful `alt` text
+
+## Performance Requirements
+
+### Critical Performance Metrics
+
+- **LCP (Largest Contentful Paint)**: < 2.5s
+- **FID (First Input Delay)**: < 100ms
+- **CLS (Cumulative Layout Shift)**: < 0.1
+- All Lighthouse scores must be 100
+
+### Performance Best Practices
+
+1. Minimize JavaScript execution in eager phase
+2. Defer non-critical resources to lazy phase
+3. Delay analytics/tracking to delayed phase (3s)
+4. Use native lazy loading: `loading="lazy"`
+5. Avoid layout shifts (specify image dimensions)
+6. Minimize CSS selector complexity
+7. Avoid blocking the main thread
+
+### RUM (Real User Monitoring)
+
+- AEM automatically tracks performance via `sampleRUM()`
+- Key checkpoints: 'top', 'lazy', 'viewmedia', 'viewblock'
+- Available globally via `window.hlx.rum`
+
+## Linting and Code Quality
+
+### ESLint Configuration
+
+- Follows Airbnb base configuration
+- Run `npm run lint` before commits
+- Run `npm run lint:fix` to auto-fix issues
+- All code must pass linting
+
+### Common ESLint Rules
+
+- Max line length: 100 characters
+- No unused variables
+- Consistent return statements
+- Prefer destructuring
+- No console logs in production (use `console.debug` for RUM)
+
+### Stylelint Configuration
+
+- Follows standard configuration
+- Run `npm run lint:css` to check styles
+- Ensure proper selector specificity
+- Maintain consistent formatting
+
+## Authoring Considerations
+
+### Block Structure in Documents
+
+Blocks are authored in Word/Google Docs as tables:
+
+```
+| Block Name (Type) |
+| Content Row 1     |
+| Content Row 2     |
+```
+
+### Section Metadata
+
+Add section metadata to control styling:
+
+```
+| Section Metadata |
+| style | light, highlight |
+| background | image-url |
+```
+
+### Page Metadata
+
+Set via meta tags or document properties:
+
+- `og:title`, `og:description`, `og:image`
+- `template` - Apply page templates
+- `theme` - Apply themes
+- `nav` - Custom navigation path
+- `breadcrumbs` - Enable breadcrumbs (true/false)
+
+## Fragment Pattern
+
+### Using Fragments
+
+Fragments are reusable content pieces loaded from `/fragments/`:
+
+```javascript
+import { loadFragment } from '../blocks/fragment/fragment.js';
+
+const fragment = await loadFragment('/fragments/header');
+element.append(fragment);
+```
+
+### Auto-loading Fragments
+
+Links to `/fragments/*` are automatically converted to embedded fragments.
+
+## Header and Footer
+
+### Navigation Structure
+
+- Brand section: Logo and site title
+- Sections: Main navigation with dropdowns
+- Tools: Search, user menu, etc.
+
+### Breadcrumbs
+
+- Enable via metadata: `breadcrumbs: true`
+- Automatically built from navigation tree
+- Uses placeholders for i18n
+
+## Button Styling Convention
+
+### Automatic Button Decoration
+
+- `<p><a href="...">Link</a></p>` → `.button` (default)
+- `<p><strong><a href="...">Link</a></strong></p>` → `.button.primary`
+- `<p><em><a href="...">Link</a></em></p>` → `.button.secondary`
+
+### Manual Button Classes
+
+Apply `.button`, `.button.primary`, or `.button.secondary` directly to links.
+
+## Icon System
+
+### Using Icons
+
+1. Add SVG file to `/icons/{icon-name}.svg`
+2. In HTML, use: `<span class="icon icon-{icon-name}"></span>`
+3. Call `decorateIcons(element)` to convert to `<img>` tags
+
+### Icon Properties
+
+- Default size: 24x24px
+- Lazy loaded by default
+- SVG format preferred
+
+## Spreadsheet Integration
+
+### Consuming JSON Data
+
+Excel and Google Sheets can be published as JSON:
+
+```javascript
+const response = await fetch('/data.json');
+const json = await response.json();
+const rows = json.data; // Array of objects
+```
+
+### Use Cases
+
+- Placeholders (i18n)
+- Configuration
+- Dynamic content lists
+- Redirects mapping
+
+## Development Workflow
+
+### Local Development
+
+1. Install dependencies: `npm install`
+2. Install AEM CLI: `npm install -g @adobe/aem-cli`
+3. Start local server: `aem up`
+4. Browser opens at `http://localhost:3000`
+5. Changes reflect immediately
+
+### Code Organization
+
+- Keep blocks self-contained and reusable
+- Share utilities via `/scripts/aem.js`
+- Project-specific code in `/scripts/scripts.js`
+- Delayed scripts in `/scripts/delayed.js`
+
+### Git Workflow
+
+- Commit frequently with clear messages
+- Follow conventional commits
+- Keep PRs focused and small
+- Run linting before commits
+
+## Testing Guidelines
+
+### Manual Testing Checklist
+
+- [ ] Test on mobile viewport (< 900px)
+- [ ] Test on desktop viewport (>= 900px)
+- [ ] Check all interactive elements
+- [ ] Verify keyboard navigation
+- [ ] Test with slow 3G throttling
+- [ ] Validate HTML semantics
+- [ ] Run Lighthouse audit (must be 100/100/100/100)
+
+### Browser Support
+
+- Last 2 versions of major browsers
+- Chrome, Firefox, Safari, Edge
+- iOS Safari, Chrome on Android
+
+## Common Patterns
+
+### Loading External Content
+
+```javascript
+async function loadData() {
+  try {
+    const resp = await fetch('/data.json');
+    if (!resp.ok) return null;
+    return await resp.json();
+  } catch (error) {
+    console.error('Loading failed', error);
+    return null;
+  }
+}
+```
+
+### Creating Element Structures
+
+```javascript
+function createCard(data) {
+  const card = document.createElement('div');
+  card.className = 'card';
+  
+  const title = document.createElement('h3');
+  title.textContent = data.title;
+  
+  const picture = createOptimizedPicture(data.image, data.alt);
+  
+  card.append(picture, title);
+  return card;
+}
+```
+
+### Handling Configurations
+
+```javascript
+export default function decorate(block) {
+  const config = readBlockConfig(block);
+  // config object with key-value pairs from block content
+  
+  if (config.style === 'highlight') {
+    block.classList.add('highlight');
+  }
+}
+```
+
+## Accessibility Requirements
+
+### ARIA and Semantics
+
+- Use proper heading hierarchy (h1 → h2 → h3)
+- Add `aria-label` for icon-only buttons
+- Use `aria-expanded` for collapsible elements
+- Add `aria-current="page"` for current page in nav
+- Ensure keyboard navigation works
+
+### Focus Management
+
+- Visible focus indicators
+- Logical tab order
+- Skip links for navigation
+- Focus trapping in modals
+
+### Color and Contrast
+
+- Minimum contrast ratio: 4.5:1 for normal text
+- 3:1 for large text and UI components
+- Don't rely on color alone for information
+
+## Security Considerations
+
+### Content Security
+
+- Sanitize user input
+- Use `textContent` instead of `innerHTML` when possible
+- Validate URLs before navigation
+- Be cautious with `eval()` and similar
+
+### CORS and Fetch
+
+- Configure CORS headers if needed
+- Handle fetch errors gracefully
+- Validate JSON responses
+
+## Deployment and Environments
+
+### Environment URLs
+
+- **Preview**: `https://main--{repo}--{owner}.aem.page/`
+- **Live**: `https://main--{repo}--{owner}.aem.live/`
+
+### Going Live
+
+1. Configure CDN (Cloudflare, Fastly, Akamai, CloudFront, or Adobe-managed)
+2. Set up custom domain
+3. Enable push invalidation
+4. Configure redirects in `redirects.xlsx`
+5. Generate sitemap
+
+### Push Invalidation
+
+Automatically purge CDN cache when content is published via AEM Code Sync.
+
+## Resources
+
+### Official Documentation
+
+- Developer Tutorial: <https://www.aem.live/developer/tutorial>
+- Anatomy of a Project: <https://www.aem.live/developer/anatomy-of-a-project>
+- Block Collection: <https://www.aem.live/developer/block-collection>
+- Web Performance: <https://www.aem.live/developer/keeping-it-100>
+
+### Key Concepts
+
+- Sections: Top-level content containers
+- Blocks: Reusable components within sections
+- Auto-blocking: Automatic block creation patterns
+- Decoration: Progressive enhancement of DOM
+
+## Anti-Patterns to Avoid
+
+### Don't Do This
+
+- ❌ Loading large JavaScript libraries unnecessarily
+- ❌ Blocking rendering with synchronous scripts
+- ❌ Using jQuery or other heavy frameworks
+- ❌ Inline styles that override system styles
+- ❌ Creating blocks that aren't reusable
+- ❌ Hardcoding content that should be authored
+- ❌ Ignoring mobile viewport
+- ❌ Forgetting to test Lighthouse scores
+
+### Do This Instead
+
+- ✅ Use native browser APIs
+- ✅ Load scripts asynchronously
+- ✅ Embrace progressive enhancement
+- ✅ Use CSS custom properties for theming
+- ✅ Create flexible, configurable blocks
+- ✅ Keep content in documents
+- ✅ Mobile-first responsive design
+- ✅ Continuously monitor performance
+
+## Quick Reference Commands
+
+```bash
+# Install dependencies
+npm install
+
+# Run linting
+npm run lint
+
+# Fix linting issues
+npm run lint:fix
+
+# Start local development server
+aem up
+
+# Install AEM CLI globally
+npm install -g @adobe/aem-cli
+```
+
+---
+
+**Remember**: Performance and user experience are paramount. Every line of code should serve the user's needs while maintaining the highest standards of web performance.

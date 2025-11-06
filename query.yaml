@@ -1,0 +1,27 @@
+version: 1
+indices:
+  pages:
+    include:
+      - '/**'
+    exclude:
+      - '/**.json'
+    target: /query-index.json
+    properties:
+      lastModified:
+        select: none
+        value: parseTimestamp(headers["last-modified"], "ddd, DD MMM YYYY hh:mm:ss GMT")
+      robots:
+        select: head > meta[name="robots"]
+        value: attribute(el, "content")
+      content:
+        select: main
+        value: textContent(el)
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, "content")
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, "content"), "https:\/\/[^/]+(/.*)"
+      description:
+        select: head > meta[property="og:description"]
+        value: attribute(el, "content")
