@@ -1,0 +1,577 @@
+---
+alwaysApply: false
+description: Guidelines for building AEM Edge Delivery blocks
+---
+
+# Building Blocks
+
+Guidelines for implementing AEM Edge Delivery blocks with proper decoration, styling, and behavior.
+
+## Prerequisites
+
+Before implementing a block, you MUST have:
+- ✅ Test content created or identified
+- ✅ Content model designed and documented
+- ✅ Test content accessible in dev environment
+- ✅ Similar blocks researched (Block Collection/Party)
+
+**If you don't have these, use Content-Driven Development process first.**
+
+## Block Structure
+
+### File Organization
+```
+blocks/{block-name}/
+├── {block-name}.js    # Decoration logic
+└── {block-name}.css   # Styles
+```
+
+### Naming Conventions
+- Use kebab-case: `hero`, `blog-post-card`, `testimonial-carousel`
+- Match class name to directory name
+- File names must match directory name
+
+## JavaScript Implementation
+
+### Basic Decoration Pattern
+
+```javascript
+export default function decorate(block) {
+  // 1. Read initial structure (content model)
+  const rows = [...block.children];
+  
+  // 2. Extract data from content
+  const data = extractData(rows);
+  
+  // 3. Transform DOM
+  block.innerHTML = '';
+  block.append(buildNewStructure(data));
+  
+  // 4. Add behavior (if needed)
+  addEventListeners(block);
+}
+```
+
+### Data Extraction Pattern
+
+```javascript
+function extractData(rows) {
+  return rows.map(row => {
+    const cells = [...row.children];
+    return {
+      picture: cells[0]?.querySelector('picture'),
+      title: cells[1]?.textContent?.trim(),
+      description: cells[2]?.textContent?.trim(),
+      link: cells[3]?.querySelector('a'),
+    };
+  });
+}
+```
+
+### Safe DOM Building
+
+```javascript
+function buildCard(data) {
+  const card = document.createElement('div');
+  card.className = 'card';
+  
+  // Preserve picture (already optimized)
+  if (data.picture) {
+    const imageWrapper = document.createElement('div');
+    imageWrapper.className = 'card-image';
+    imageWrapper.append(data.picture);
+    card.append(imageWrapper);
+  }
+  
+  // Build content
+  const content = document.createElement('div');
+  content.className = 'card-content';
+  
+  if (data.title) {
+    const title = document.createElement('h3');
+    title.textContent = data.title;
+    content.append(title);
+  }
+  
+  if (data.description) {
+    const desc = document.createElement('p');
+    desc.textContent = data.description;
+    content.append(desc);
+  }
+  
+  card.append(content);
+  return card;
+}
+```
+
+### Async Decoration (for API calls, fragments)
+
+```javascript
+export default async function decorate(block) {
+  const fragmentPath = block.querySelector('a')?.href;
+  
+  if (fragmentPath) {
+    try {
+      const fragment = await loadFragment(fragmentPath);
+      block.innerHTML = '';
+      block.append(fragment);
+    } catch (error) {
+      console.error('Error loading fragment:', error);
+      block.innerHTML = '<p>Unable to load content.</p>';
+    }
+  }
+}
+```
+
+### Variant Handling
+
+```javascript
+export default function decorate(block) {
+  // Check for variant classes
+  const isDark = block.classList.contains('dark');
+  const isLarge = block.classList.contains('large');
+  
+  // Or find variant from list
+  const variants = ['default', 'compact', 'featured'];
+  const variant = [...block.classList].find(cls => variants.includes(cls)) || 'default';
+  
+  if (variant === 'featured') {
+    // Featured variant logic
+  }
+}
+```
+
+## CSS Implementation
+
+### Scoping Rules
+
+```css
+/* All styles scoped to block class */
+.my-block {
+  padding: 2rem;
+}
+
+.my-block .title {
+  font-size: var(--heading-font-size-l);
+}
+
+/* Never use global selectors */
+```
+
+### Mobile-First Responsive
+
+```css
+/* Mobile default (< 600px) */
+.my-block {
+  padding: 1rem;
+}
+
+.my-block .cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+/* Tablet (600px+) */
+@media (min-width: 600px) {
+  .my-block {
+    padding: 1.5rem;
+  }
+  
+  .my-block .cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Desktop (900px+) */
+@media (min-width: 900px) {
+  .my-block {
+    padding: 2rem;
+  }
+  
+  .my-block .cards {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+}
+```
+
+### CSS Custom Properties
+
+```css
+/* Use CSS variables from styles.css */
+.my-block {
+  background: var(--background-color);
+  color: var(--text-color);
+  font-family: var(--body-font-family);
+}
+
+.my-block .title {
+  font-size: var(--heading-font-size-l);
+  font-family: var(--heading-font-family);
+  color: var(--dark-color);
+}
+
+.my-block a {
+  color: var(--link-color);
+}
+```
+
+### Variant Styles
+
+```css
+/* Base styles */
+.hero {
+  background: white;
+  color: black;
+}
+
+/* Dark variant */
+.hero.dark {
+  background: black;
+  color: white;
+}
+
+/* Large variant */
+.hero.large {
+  min-height: 80vh;
+}
+
+/* Combined variants */
+.hero.dark.large {
+  /* Specific combined styles */
+}
+```
+
+## Using AEM.js Utilities
+
+### Image Optimization
+
+```javascript
+import { createOptimizedPicture } from '../../scripts/aem.js';
+
+// Lazy loading (default)
+const picture = createOptimizedPicture(imgSrc, imgAlt);
+
+// Eager loading (for LCP)
+const heroPicture = createOptimizedPicture(heroSrc, heroAlt, true);
+
+// With breakpoints
+const responsivePicture = createOptimizedPicture(
+  imgSrc,
+  imgAlt,
+  false,
+  [
+    { media: '(min-width: 900px)', width: '2000' },
+    { media: '(min-width: 600px)', width: '1200' },
+    { width: '750' }
+  ]
+);
+```
+
+### Button Decoration
+
+```javascript
+import { decorateButtons } from '../../scripts/aem.js';
+
+export default function decorate(block) {
+  // Auto-decorates links as buttons
+  decorateButtons(block);
+}
+```
+
+### Icon Decoration
+
+```javascript
+import { decorateIcons } from '../../scripts/aem.js';
+
+export default async function decorate(block) {
+  // Add icon spans to markup
+  const button = document.createElement('button');
+  button.innerHTML = '<span class="icon icon-search"></span> Search';
+  block.append(button);
+  
+  // Decorate icons (async)
+  await decorateIcons(block);
+}
+```
+
+### Reading Block Config
+
+```javascript
+import { readBlockConfig } from '../../scripts/aem.js';
+
+export default function decorate(block) {
+  // Extracts key-value pairs from block structure
+  const config = readBlockConfig(block);
+  
+  if (config.style) {
+    block.classList.add(config.style);
+  }
+  
+  if (config.columns) {
+    block.style.setProperty('--columns', config.columns);
+  }
+}
+```
+
+## Accessibility Requirements
+
+### Semantic HTML
+
+```javascript
+// Use semantic elements
+const article = document.createElement('article');
+const header = document.createElement('header');
+const section = document.createElement('section');
+
+// Not just divs everywhere
+```
+
+### ARIA Attributes
+
+```javascript
+// For interactive elements
+button.setAttribute('aria-label', 'Close dialog');
+button.setAttribute('aria-expanded', 'false');
+
+// For navigation
+nav.setAttribute('aria-label', 'Main navigation');
+link.setAttribute('aria-current', 'page');
+
+// For headings
+section.setAttribute('aria-labelledby', 'section-title');
+```
+
+### Keyboard Navigation
+
+```javascript
+function makeKeyboardAccessible(element, callback) {
+  element.setAttribute('tabindex', '0');
+  element.setAttribute('role', 'button');
+  
+  element.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      callback(e);
+    }
+  });
+  
+  element.addEventListener('click', callback);
+}
+```
+
+### Focus Management
+
+```css
+/* Visible focus indicators */
+.my-block button:focus,
+.my-block a:focus {
+  outline: 2px solid var(--link-color);
+  outline-offset: 2px;
+}
+
+/* Don't remove focus styles */
+```
+
+## Performance Considerations
+
+### Minimize DOM Operations
+
+```javascript
+// ❌ Bad: Multiple reflows
+rows.forEach(row => {
+  block.append(buildCard(row));
+});
+
+// ✅ Good: Single append
+const fragment = document.createDocumentFragment();
+rows.forEach(row => {
+  fragment.append(buildCard(row));
+});
+block.append(fragment);
+```
+
+### Lazy Loading Content
+
+```javascript
+function setupLazyLoading(block) {
+  const items = block.querySelectorAll('.lazy-item');
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        loadItem(entry.target);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { rootMargin: '50px' });
+  
+  items.forEach(item => observer.observe(item));
+}
+```
+
+### Image Loading Strategy
+
+```javascript
+// First image (LCP candidate) - eager
+const firstPicture = createOptimizedPicture(firstImg.src, firstImg.alt, true);
+
+// Other images - lazy (default)
+const otherPictures = otherImgs.map(img => 
+  createOptimizedPicture(img.src, img.alt)
+);
+```
+
+## Error Handling
+
+### Safe Data Access
+
+```javascript
+// Use optional chaining and defaults
+const title = row.children[0]?.textContent?.trim() || 'Untitled';
+const link = row.children[1]?.querySelector('a')?.href || '#';
+```
+
+### Graceful Degradation
+
+```javascript
+export default async function decorate(block) {
+  try {
+    const data = await fetchData();
+    renderContent(block, data);
+  } catch (error) {
+    console.error('Error loading content:', error);
+    block.innerHTML = '<p>Unable to load content. Please try again.</p>';
+  }
+}
+```
+
+## Testing Your Block
+
+### Manual Testing Checklist
+
+- [ ] View test content in `localhost:3000`
+- [ ] All variants render correctly
+- [ ] Mobile viewport (< 600px) works
+- [ ] Tablet viewport (600-900px) works
+- [ ] Desktop viewport (> 900px) works
+- [ ] Images load correctly (check network tab)
+- [ ] Links work correctly
+- [ ] Buttons are clickable
+- [ ] Keyboard navigation works (Tab, Enter, Space)
+- [ ] No console errors
+- [ ] Run `npm run lint` passes
+
+### Browser DevTools
+
+```javascript
+// Inspect block structure
+document.querySelector('.my-block')
+
+// Check for errors
+console.error // Look for red errors
+
+// Performance
+Performance tab > Record > Stop
+```
+
+## Common Patterns
+
+### Carousel/Slider
+
+```javascript
+function setupCarousel(block) {
+  const slides = [...block.querySelectorAll('.slide')];
+  let current = 0;
+  
+  function show(index) {
+    slides.forEach((slide, i) => {
+      slide.classList.toggle('active', i === index);
+      slide.setAttribute('aria-hidden', i !== index);
+    });
+  }
+  
+  function next() {
+    current = (current + 1) % slides.length;
+    show(current);
+  }
+  
+  function prev() {
+    current = (current - 1 + slides.length) % slides.length;
+    show(current);
+  }
+  
+  // Add navigation
+  block.querySelector('.next')?.addEventListener('click', next);
+  block.querySelector('.prev')?.addEventListener('click', prev);
+  
+  show(0);
+}
+```
+
+### Accordion/Collapse
+
+```javascript
+function setupAccordion(block) {
+  const items = block.querySelectorAll('.accordion-item');
+  
+  items.forEach(item => {
+    const button = item.querySelector('.accordion-button');
+    const content = item.querySelector('.accordion-content');
+    
+    button.addEventListener('click', () => {
+      const expanded = button.getAttribute('aria-expanded') === 'true';
+      button.setAttribute('aria-expanded', !expanded);
+      content.hidden = expanded;
+    });
+  });
+}
+```
+
+### Tabs
+
+```javascript
+function setupTabs(block) {
+  const tabs = [...block.querySelectorAll('.tab')];
+  const panels = [...block.querySelectorAll('.panel')];
+  
+  tabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.setAttribute('aria-selected', 'false'));
+      panels.forEach(p => p.hidden = true);
+      
+      tab.setAttribute('aria-selected', 'true');
+      panels[index].hidden = false;
+    });
+  });
+}
+```
+
+## Anti-Patterns to Avoid
+
+❌ **Don't:**
+- Use `innerHTML` with user content (XSS risk)
+- Modify `scripts/aem.js`
+- Create non-responsive blocks
+- Skip mobile testing
+- Ignore accessibility
+- Use inline styles
+- Recreate pictures (breaks optimization)
+- Use jQuery or heavy libraries
+- Block the main thread
+
+✅ **Do:**
+- Use `textContent` for text, `createElement` for structure
+- Import from `aem.js`, never modify it
+- Mobile-first responsive design
+- Test all viewports
+- Keyboard navigation and ARIA
+- CSS classes and custom properties
+- Preserve existing picture elements
+- Use native browser APIs
+- Async operations for heavy work
+
+---
+
+**Remember:** Blocks should be simple, focused, and follow established patterns. Check existing blocks and Block Collection for reference implementations.

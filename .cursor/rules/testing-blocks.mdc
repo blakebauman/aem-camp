@@ -1,0 +1,531 @@
+---
+alwaysApply: false
+description: Testing strategies and quality assurance for AEM blocks
+---
+
+# Testing Blocks
+
+Comprehensive testing guidance for AEM Edge Delivery Services blocks and code.
+
+## Testing Philosophy
+
+### Keeper vs Throwaway Tests
+
+**Keeper Tests** - Maintain long-term:
+- Critical business logic
+- Complex algorithms
+- Shared utilities
+- Core functionality
+
+**Throwaway Tests** - Use for validation, then discard:
+- One-off block validation
+- Simple DOM transformations
+- Visual/manual testing
+- PR-specific checks
+
+**Rule of thumb:** If it's expensive to manually test every time, write a keeper test. If it's quick to visually validate, throwaway or manual test is fine.
+
+## Manual Testing (Always Required)
+
+### Pre-Flight Checklist
+
+Before considering any code complete:
+
+- [ ] Test content exists and loads
+- [ ] View in `localhost:3000`
+- [ ] All variants render correctly
+- [ ] Mobile viewport (< 600px)
+- [ ] Tablet viewport (600-900px)
+- [ ] Desktop viewport (> 900px)
+- [ ] Images load correctly
+- [ ] Links work correctly
+- [ ] Buttons are clickable
+- [ ] Keyboard navigation (Tab, Enter, Space)
+- [ ] Screen reader friendly (VoiceOver/NVDA)
+- [ ] No console errors
+- [ ] No linting errors
+
+### Testing in Browser DevTools
+
+```bash
+# Start dev server
+aem up
+
+# Open browser to test page
+open http://localhost:3000/test-page
+```
+
+**DevTools checklist:**
+- Console tab - Check for errors
+- Network tab - Verify image optimization
+- Performance tab - Record page load
+- Lighthouse - Run audit (must be 100/100/100/100)
+- Accessibility tree - Verify structure
+
+## Linting (Required)
+
+### Running Linters
+
+```bash
+# Run all linters
+npm run lint
+
+# Run JavaScript linting only
+npm run lint:js
+
+# Run CSS linting only
+npm run lint:css
+
+# Auto-fix issues
+npm run lint:fix
+```
+
+### Common Linting Issues
+
+**JavaScript:**
+- Line length > 100 characters → Break into multiple lines
+- Unused variables → Remove or prefix with `_`
+- Console logs → Use `console.debug` for development, remove for production
+
+**CSS:**
+- Selector specificity too high → Simplify selectors
+- Unknown properties → Check for typos
+- Color format inconsistent → Use hex or CSS custom properties
+
+## Unit Testing (Optional, for Logic-Heavy Code)
+
+### When to Write Unit Tests
+
+Write unit tests for:
+- Complex data transformations
+- Algorithms (sorting, filtering, parsing)
+- Utility functions used across blocks
+- Functions with multiple branches/conditions
+
+Skip unit tests for:
+- Simple DOM manipulation
+- One-off block decoration
+- Pure visual elements
+
+### Setup (Vitest)
+
+```bash
+# Install vitest (if not already)
+npm install -D vitest @vitest/ui jsdom
+
+# Add to package.json
+"scripts": {
+  "test": "vitest",
+  "test:ui": "vitest --ui"
+}
+```
+
+### Example Unit Test
+
+```javascript
+// blocks/my-block/utils.js
+export function extractData(rows) {
+  return rows.map(row => {
+    const cells = [...row.children];
+    return {
+      title: cells[0]?.textContent?.trim(),
+      description: cells[1]?.textContent?.trim(),
+    };
+  });
+}
+
+// blocks/my-block/utils.test.js
+import { describe, it, expect } from 'vitest';
+import { extractData } from './utils.js';
+
+describe('extractData', () => {
+  it('should extract data from row structure', () => {
+    // Setup
+    const mockDiv = document.createElement('div');
+    mockDiv.innerHTML = `
+      <div>
+        <div>Title</div>
+        <div>Description</div>
+      </div>
+    `;
+    
+    // Execute
+    const result = extractData([...mockDiv.children]);
+    
+    // Assert
+    expect(result).toEqual([
+      { title: 'Title', description: 'Description' }
+    ]);
+  });
+  
+  it('should handle missing cells gracefully', () => {
+    const mockDiv = document.createElement('div');
+    mockDiv.innerHTML = '<div><div>Only Title</div></div>';
+    
+    const result = extractData([...mockDiv.children]);
+    
+    expect(result).toEqual([
+      { title: 'Only Title', description: '' }
+    ]);
+  });
+});
+```
+
+### Running Unit Tests
+
+```bash
+# Run once
+npm test
+
+# Watch mode
+npm test -- --watch
+
+# UI mode
+npm run test:ui
+```
+
+## Browser Testing (Optional, for Complex Interactions)
+
+### When to Write Browser Tests
+
+Write browser tests for:
+- Complex user interactions (carousels, accordions, tabs)
+- Form submissions
+- Multi-step processes
+- Dynamic content loading
+- Cross-browser issues
+
+Skip browser tests for:
+- Simple static blocks
+- Pure visual elements
+- One-off implementations
+
+### Setup (Playwright)
+
+```bash
+# Install Playwright
+npm install -D @playwright/test
+
+# Install browsers
+npx playwright install
+
+# Add to package.json
+"scripts": {
+  "test:browser": "playwright test"
+}
+```
+
+### Example Browser Test
+
+```javascript
+// tests/blocks/carousel.spec.js
+import { test, expect } from '@playwright/test';
+
+test.describe('Carousel Block', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('http://localhost:3000/test-carousel');
+  });
+  
+  test('should render carousel', async ({ page }) => {
+    const carousel = page.locator('.carousel');
+    await expect(carousel).toBeVisible();
+    
+    const slides = carousel.locator('.slide');
+    await expect(slides).toHaveCount(3);
+  });
+  
+  test('should navigate to next slide', async ({ page }) => {
+    const nextBtn = page.locator('.carousel-next');
+    const slides = page.locator('.slide');
+    
+    // First slide is active
+    await expect(slides.nth(0)).toHaveClass(/active/);
+    
+    // Click next
+    await nextBtn.click();
+    
+    // Second slide is active
+    await expect(slides.nth(1)).toHaveClass(/active/);
+  });
+  
+  test('should support keyboard navigation', async ({ page }) => {
+    const carousel = page.locator('.carousel');
+    await carousel.focus();
+    
+    const slides = page.locator('.slide');
+    
+    // Arrow right
+    await page.keyboard.press('ArrowRight');
+    await expect(slides.nth(1)).toHaveClass(/active/);
+    
+    // Arrow left
+    await page.keyboard.press('ArrowLeft');
+    await expect(slides.nth(0)).toHaveClass(/active/);
+  });
+});
+```
+
+### Running Browser Tests
+
+```bash
+# Run tests
+npm run test:browser
+
+# Run with UI
+npm run test:browser -- --ui
+
+# Run specific test
+npm run test:browser -- carousel.spec.js
+
+# Run in headed mode (see browser)
+npm run test:browser -- --headed
+```
+
+## Performance Testing
+
+### Lighthouse (Required for PR)
+
+Every PR must include a test content URL for automated PageSpeed Insights (PSI) checks.
+
+**In PR description:**
+```markdown
+Test URL: https://main--repo--owner.aem.page/test-page
+```
+
+**Manual Lighthouse:**
+```bash
+# Chrome DevTools > Lighthouse
+# Click "Analyze page load"
+# Check all scores are 100
+```
+
+### Core Web Vitals
+
+Must meet thresholds:
+- **LCP** (Largest Contentful Paint): < 2.5s
+- **FID** (First Input Delay): < 100ms
+- **CLS** (Cumulative Layout Shift): < 0.1
+
+**How to improve:**
+- Eager load only first section
+- Use `createOptimizedPicture` for images
+- Specify image dimensions (prevent CLS)
+- Minimize JavaScript in eager phase
+- Defer analytics to delayed phase
+
+### Real User Monitoring (RUM)
+
+```javascript
+// Available globally
+window.hlx.rum
+
+// Track custom events
+sampleRUM('custom-event', { data: 'value' });
+```
+
+## Accessibility Testing
+
+### Automated Checks
+
+**Lighthouse Accessibility:**
+- Must be 100/100
+- Checks ARIA, contrast, semantics
+
+**axe DevTools:**
+```bash
+# Install browser extension
+# Run on test page
+# Fix all issues
+```
+
+### Manual Checks
+
+- [ ] Keyboard navigation works (Tab, Shift+Tab)
+- [ ] Enter/Space activates buttons
+- [ ] Focus indicators visible
+- [ ] Screen reader announces content correctly
+- [ ] Heading hierarchy logical (h1 → h2 → h3)
+- [ ] Images have alt text
+- [ ] Links have descriptive text (not "click here")
+- [ ] Color contrast sufficient (4.5:1 normal, 3:1 large)
+
+### Screen Reader Testing
+
+**macOS (VoiceOver):**
+```bash
+# Enable: Cmd+F5
+# Navigate: Ctrl+Option+Arrow keys
+# Read: Ctrl+Option+A
+```
+
+**Windows (NVDA):**
+- Download from nvaccess.org
+- Navigate: Arrow keys
+- Read: NVDA+Down arrow
+
+## PR Preparation Checklist
+
+Before opening a pull request:
+
+### Code Quality
+- [ ] `npm run lint` passes
+- [ ] No console errors in browser
+- [ ] Code follows project patterns
+- [ ] Comments added for complex logic
+
+### Testing
+- [ ] Manual testing complete (all viewports)
+- [ ] Unit tests written (if applicable)
+- [ ] Browser tests written (if applicable)
+- [ ] Accessibility tested
+
+### Content
+- [ ] Test content exists in CMS
+- [ ] Test content URL accessible
+- [ ] All variants demonstrated in test content
+
+### Documentation
+- [ ] Block documented (if new)
+- [ ] Content model documented
+- [ ] Breaking changes noted
+
+### PR Description
+- [ ] Clear description of changes
+- [ ] Test URL included for PSI: `https://branch--repo--owner.aem.page/test-page`
+- [ ] Screenshots (if visual changes)
+- [ ] Breaking changes highlighted
+
+## Continuous Integration Checks
+
+### Automated Checks (GitHub Actions)
+
+Every PR automatically runs:
+1. **ESLint** - JavaScript code quality
+2. **Stylelint** - CSS code quality
+3. **PageSpeed Insights** - Performance validation on test URL
+
+**All checks must pass before merge.**
+
+### Viewing Check Results
+
+```bash
+# Via GitHub CLI
+gh pr checks
+
+# Watch checks in real-time
+gh pr checks --watch
+
+# View specific check
+gh run view <run-id>
+```
+
+## Common Testing Patterns
+
+### Testing Variants
+
+```javascript
+test.describe('Hero Block Variants', () => {
+  test('default variant', async ({ page }) => {
+    await page.goto('http://localhost:3000/hero-default');
+    const hero = page.locator('.hero');
+    await expect(hero).not.toHaveClass(/dark/);
+  });
+  
+  test('dark variant', async ({ page }) => {
+    await page.goto('http://localhost:3000/hero-dark');
+    const hero = page.locator('.hero.dark');
+    await expect(hero).toBeVisible();
+  });
+});
+```
+
+### Testing Responsive Behavior
+
+```javascript
+test('should be responsive', async ({ page }) => {
+  await page.goto('http://localhost:3000/test-page');
+  
+  // Mobile
+  await page.setViewportSize({ width: 375, height: 667 });
+  const mobileCards = page.locator('.cards');
+  await expect(mobileCards).toHaveCSS('grid-template-columns', '1fr');
+  
+  // Desktop
+  await page.setViewportSize({ width: 1200, height: 800 });
+  await expect(mobileCards).toHaveCSS('grid-template-columns', /repeat/);
+});
+```
+
+### Testing Error States
+
+```javascript
+test('should handle missing content gracefully', async ({ page }) => {
+  await page.goto('http://localhost:3000/broken-block');
+  
+  const block = page.locator('.my-block');
+  await expect(block).toContainText('Unable to load content');
+});
+```
+
+## Troubleshooting Test Failures
+
+### Linting Failures
+
+```bash
+# See errors
+npm run lint
+
+# Auto-fix most issues
+npm run lint:fix
+
+# Fix remaining issues manually
+```
+
+### Performance Failures
+
+**LCP too high:**
+- Eager load first section only
+- Optimize hero image
+- Remove blocking scripts
+
+**CLS issues:**
+- Set image dimensions
+- Reserve space for dynamic content
+- Avoid DOM shifts during decoration
+
+**FID issues:**
+- Reduce JavaScript
+- Use passive event listeners
+- Defer heavy computations
+
+### Accessibility Failures
+
+**Common issues:**
+- Missing alt text → Add to images
+- Poor contrast → Check colors (4.5:1 ratio)
+- Missing ARIA → Add aria-label, aria-expanded, etc.
+- Bad heading hierarchy → Use h1 → h2 → h3 in order
+
+## Anti-Patterns to Avoid
+
+❌ **Don't:**
+- Skip manual testing
+- Ignore linting errors
+- Test without real content
+- Write tests before content exists
+- Over-test simple blocks
+- Skip accessibility checks
+- Forget PR test URL
+
+✅ **Do:**
+- Always manual test first
+- Fix all linting errors
+- Test with real content
+- Follow Content-Driven Development
+- Write keeper tests for complex logic
+- Test keyboard and screen reader
+- Include test URL in PR
+
+---
+
+**Remember:** Quality over speed. Take time to test properly. It's faster than fixing bugs later.

@@ -1,0 +1,546 @@
+---
+alwaysApply: false
+description: Designing author-friendly content models for AEM blocks
+---
+
+# Content Modeling
+
+Guidelines for designing author-friendly content structures for AEM Edge Delivery Services blocks.
+
+## Core Principle
+
+**Authors first, developers second.** Content models must be intuitive for authors, even if that means more complex decoration code.
+
+## What is a Content Model?
+
+The **content model** is the initial HTML structure delivered by AEM - the contract between authors and developers.
+
+**Example: Simple Card Block**
+```html
+<div class="card">
+  <div>
+    <div><picture>...</picture></div>  <!-- Image -->
+  </div>
+  <div>
+    <div><h3>Card Title</h3></div>     <!-- Title -->
+    <div><p>Description here</p></div>  <!-- Description -->
+    <div><a href="#">Learn More</a></div> <!-- Link -->
+  </div>
+</div>
+```
+
+This structure is created by authors in Google Docs/SharePoint as a table. Your decoration code transforms it into the final UI.
+
+## Author Experience First
+
+### Good Author Experience
+
+✅ **Clear structure:**
+```
+| Card |
+| [Image] |
+| Title |
+| Description |
+| Link |
+```
+
+✅ **Obvious meaning:**
+```
+| Hero (Dark) |
+| [Background Image] |
+| Headline |
+| Subheadline |
+| Call to Action |
+```
+
+✅ **Flexible:**
+```
+| Cards (Three Up) |
+| [Image] | Title | Text |
+| [Image] | Title | Text |
+| [Image] | Title | Text |
+```
+
+### Poor Author Experience
+
+❌ **Cryptic structure:**
+```
+| Block |
+| col1 | col2 | col3 |
+| data1 | data2 | data3 |
+```
+
+❌ **Developer-focused:**
+```
+| Component |
+| className: dark |
+| imageUrl: /path/to/image.jpg |
+| titleText: Hello World |
+```
+
+❌ **Inflexible:**
+```
+| Cards |
+| Card 1 Image | Card 1 Title | Card 1 Description |
+| Card 2 Image | Card 2 Title | Card 2 Description |
+| Card 3 Image | Card 3 Title | Card 3 Description |
+# What if author wants 2 cards? Or 5 cards?
+```
+
+## Content Model Design Process
+
+### Step 1: Understand Requirements
+
+**Ask:**
+- What content does this block display?
+- What are the required vs optional fields?
+- What variants are needed (dark, light, large, etc.)?
+- How many items can there be (1, 3, unlimited)?
+- What edge cases exist (no image, long text, etc.)?
+
+### Step 2: Sketch Authoring Table
+
+Design what authors will see in Google Docs/SharePoint:
+
+```
+| Block Name (Variant) |
+| Row 1 Cell 1 | Row 1 Cell 2 |
+| Row 2 Cell 1 | Row 2 Cell 2 |
+```
+
+### Step 3: Consider Edge Cases
+
+**Common scenarios:**
+- What if author omits optional field?
+- What if text is very long?
+- What if there's no image?
+- What if there are 10 items instead of 3?
+- What if link points to fragment?
+
+### Step 4: Document Structure
+
+Write clear documentation:
+
+```markdown
+## Testimonial Block
+
+### Content Model
+
+| Testimonial (Variant) |
+| Quote text |
+| Author name |
+| Author title |
+| [Author photo] (optional) |
+
+### Variants
+- Default: Standard layout
+- Compact: Smaller, no photo
+- Featured: Large, emphasized
+
+### Fields
+- Quote: Required, any length
+- Author name: Required
+- Author title: Optional
+- Author photo: Optional
+```
+
+## Common Content Model Patterns
+
+### Single Item Block (Hero, Quote)
+
+```html
+<div class="hero">
+  <div><!-- Config/Heading row -->
+    <div><h1>Main Heading</h1></div>
+  </div>
+  <div><!-- Content row -->
+    <div><picture>...</picture></div>
+    <div><p>Description</p></div>
+  </div>
+</div>
+```
+
+**Authoring:**
+```
+| Hero |
+| Main Heading |
+| [Image] | Description |
+```
+
+### Multi-Item Block (Cards, Testimonials)
+
+```html
+<div class="cards">
+  <div><!-- Item 1 -->
+    <div><picture>...</picture></div>
+    <div><h3>Title</h3></div>
+    <div><p>Description</p></div>
+  </div>
+  <div><!-- Item 2 -->
+    <div><picture>...</picture></div>
+    <div><h3>Title</h3></div>
+    <div><p>Description</p></div>
+  </div>
+  <!-- As many items as author wants -->
+</div>
+```
+
+**Authoring:**
+```
+| Cards |
+| [Image] | Title | Description |
+| [Image] | Title | Description |
+| [Image] | Title | Description |
+```
+
+### Config + Content Pattern
+
+```html
+<div class="testimonials">
+  <div><!-- Config row -->
+    <div>Section Title</div>
+    <div>Subtitle</div>
+  </div>
+  <div><!-- Item 1 -->
+    <div>Quote</div>
+    <div>Author</div>
+  </div>
+  <div><!-- Item 2 -->
+    <div>Quote</div>
+    <div>Author</div>
+  </div>
+</div>
+```
+
+**Authoring:**
+```
+| Testimonials |
+| Section Title | Subtitle |
+| "Great product!" | John Doe |
+| "Highly recommend" | Jane Smith |
+```
+
+**Code:**
+```javascript
+export default function decorate(block) {
+  const rows = [...block.children];
+  
+  // First row is config
+  const config = rows[0];
+  const title = config.children[0].textContent;
+  const subtitle = config.children[1].textContent;
+  
+  // Remove config row
+  config.remove();
+  
+  // Remaining rows are items
+  const items = [...block.children];
+  // Decorate items...
+}
+```
+
+## Variant Strategies
+
+### CSS Class Variants
+
+```html
+<!-- Default -->
+<div class="hero">...</div>
+
+<!-- Dark variant -->
+<div class="hero dark">...</div>
+
+<!-- Large variant -->
+<div class="hero large">...</div>
+
+<!-- Combined -->
+<div class="hero dark large">...</div>
+```
+
+**Authoring:**
+```
+| Hero (Dark) |
+```
+
+**Code:**
+```javascript
+export default function decorate(block) {
+  const isDark = block.classList.contains('dark');
+  if (isDark) {
+    // Dark-specific decoration
+  }
+}
+```
+
+### Content-Based Variants
+
+```javascript
+// Variant based on number of items
+export default function decorate(block) {
+  const items = [...block.children];
+  
+  if (items.length === 1) {
+    block.classList.add('single');
+  } else if (items.length === 2) {
+    block.classList.add('two-up');
+  } else {
+    block.classList.add('multi');
+  }
+}
+```
+
+### Explicit Configuration
+
+```html
+<div class="cards">
+  <div><!-- Config -->
+    <div>columns</div>
+    <div>3</div>
+  </div>
+  <div><!-- Config -->
+    <div>style</div>
+    <div>compact</div>
+  </div>
+  <!-- Items... -->
+</div>
+```
+
+**Code:**
+```javascript
+import { readBlockConfig } from '../../scripts/aem.js';
+
+export default function decorate(block) {
+  const config = readBlockConfig(block);
+  // { columns: '3', style: 'compact' }
+  
+  if (config.columns) {
+    block.style.setProperty('--columns', config.columns);
+  }
+  
+  if (config.style === 'compact') {
+    block.classList.add('compact');
+  }
+}
+```
+
+## Handling Optional Fields
+
+### Graceful Omission
+
+```javascript
+function buildCard(data) {
+  const card = document.createElement('div');
+  card.className = 'card';
+  
+  // Image is optional
+  if (data.picture) {
+    const imageWrapper = document.createElement('div');
+    imageWrapper.className = 'card-image';
+    imageWrapper.append(data.picture);
+    card.append(imageWrapper);
+  }
+  
+  // Title is required
+  const title = document.createElement('h3');
+  title.textContent = data.title || 'Untitled';
+  card.append(title);
+  
+  // Description is optional
+  if (data.description) {
+    const desc = document.createElement('p');
+    desc.textContent = data.description;
+    card.append(desc);
+  }
+  
+  return card;
+}
+```
+
+### CSS Handling
+
+```css
+/* Card with image */
+.card {
+  display: grid;
+  grid-template-areas: 
+    "image"
+    "content";
+}
+
+/* Card without image - content takes full space */
+.card:not(:has(.card-image)) {
+  grid-template-areas: "content";
+}
+```
+
+## Responsive Content Models
+
+### Mobile-Friendly Structure
+
+**Good:**
+```
+| Cards |
+| [Image] | Title | Description |
+```
+Each row becomes a card. Works on any screen size.
+
+**Bad:**
+```
+| Cards |
+| [Image] | [Image] | [Image] |
+| Title 1 | Title 2 | Title 3 |
+```
+Assumes 3-column layout. Doesn't work on mobile.
+
+### Flexible Layouts
+
+```javascript
+export default function decorate(block) {
+  const items = extractItems(block);
+  
+  // Let CSS handle responsive layout
+  const container = document.createElement('div');
+  container.className = 'cards-container';
+  
+  items.forEach(item => {
+    container.append(buildCard(item));
+  });
+  
+  block.innerHTML = '';
+  block.append(container);
+}
+```
+
+```css
+.cards-container {
+  display: grid;
+  grid-template-columns: 1fr; /* Mobile default */
+  gap: 2rem;
+}
+
+@media (min-width: 600px) {
+  .cards-container {
+    grid-template-columns: repeat(2, 1fr); /* Tablet */
+  }
+}
+
+@media (min-width: 900px) {
+  .cards-container {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Desktop */
+  }
+}
+```
+
+## Testing Content Models
+
+### Create Test Cases
+
+For each block, create test content showing:
+1. **Happy path** - All fields filled, perfect scenario
+2. **Minimal** - Only required fields
+3. **Maximal** - All optional fields filled
+4. **Edge cases** - Very long text, many items, no images
+5. **Variants** - All supported variants
+
+### Example Test Content Structure
+
+```
+/drafts/test-cards/
+├── default.html          # Happy path
+├── minimal.html          # Required fields only
+├── maximal.html          # All fields filled
+├── long-text.html        # Edge case: Very long descriptions
+├── many-items.html       # Edge case: 10+ cards
+├── no-images.html        # Edge case: No images
+├── variant-compact.html  # Compact variant
+└── variant-large.html    # Large variant
+```
+
+## Documentation Template
+
+```markdown
+## [Block Name]
+
+### Purpose
+Brief description of what this block does and when to use it.
+
+### Content Model
+
+| Block Name (Variant) |
+| Field 1 |
+| Field 2 |
+| Field 3 |
+
+### Fields
+
+- **Field 1**: Required/Optional, description, format
+- **Field 2**: Required/Optional, description, format
+- **Field 3**: Required/Optional, description, format
+
+### Variants
+
+- **Default**: Description
+- **Variant 1**: Description and when to use
+- **Variant 2**: Description and when to use
+
+### Examples
+
+#### Basic Example
+| Block Name |
+| Value 1 |
+| Value 2 |
+
+#### With Variant
+| Block Name (Variant) |
+| Value 1 |
+| Value 2 |
+
+### Edge Cases
+
+- What happens if field is missing?
+- What if there are many items?
+- What if text is very long?
+```
+
+## Anti-Patterns to Avoid
+
+❌ **Don't:**
+- Design for developers, not authors
+- Use cryptic field names or structure
+- Require authors to remember complex syntax
+- Create rigid structures (exactly 3 items, etc.)
+- Use developer jargon in authoring
+- Make common tasks difficult
+- Ignore mobile authoring experience
+
+✅ **Do:**
+- Design for authors first
+- Use clear, obvious field names
+- Make structure intuitive
+- Support flexible item counts
+- Use author-friendly language
+- Make common tasks easy
+- Test on mobile
+
+## Resources
+
+### Reference Implementations
+
+Check these for content model inspiration:
+- **Block Collection**: github.com/adobe/aem-block-collection
+- **Block Party**: block-party.aem.live
+- **Project blocks**: Look at existing blocks in `blocks/`
+
+### Tools
+
+```bash
+# Find existing content using a block
+node .claude/skills/content-driven-development/scripts/find-block-content.js <block-name>
+
+# View content structure
+curl http://localhost:3000/test-page
+```
+
+---
+
+**Remember:** A well-designed content model makes authoring easy and decoration code complex. That's the right tradeoff. Authors use the system daily; developers write decoration code once.

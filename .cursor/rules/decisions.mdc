@@ -1,0 +1,388 @@
+---
+alwaysApply: false
+description: Architecture Decision Records (ADRs) for AEM Edge Delivery project
+---
+
+# Architecture Decision Records (ADRs)
+
+This document captures important architectural decisions, their context, and consequences.
+
+## ADR-001: Content-Driven Development (CDD) as Mandatory Process
+
+**Date:** 2025-11-06
+**Status:** Accepted
+
+### Context
+Traditional development approaches for AEM often result in developer-friendly but author-hostile content models. Code written without real content frequently requires rework when actual authoring patterns emerge.
+
+### Decision
+Make Content-Driven Development (CDD) a mandatory process for all development work. This means:
+- Test content must exist before code is written
+- Content models designed for authors, not developers
+- Real content drives development and testing
+- Test content serves dual purpose as PR validation link
+
+### Consequences
+
+**Positive:**
+- Content models are intuitive for authors
+- Fewer rework cycles when real content emerges
+- Test content available immediately for PR validation
+- Living documentation through test content examples
+
+**Negative:**
+- Slightly longer initial setup time
+- Requires coordination with content authors
+- May feel constraining to developers used to code-first approaches
+
+**Mitigation:**
+- Scripts provided to find existing content quickly
+- Local HTML option for rapid prototyping
+- Clear documentation and tooling to streamline process
+
+---
+
+## ADR-002: Block-Based Architecture
+
+**Date:** 2025-11-06
+**Status:** Accepted
+
+### Context
+AEM Edge Delivery Services is built on a block-based architecture where each component is self-contained and transforms authored content into rich experiences.
+
+### Decision
+Embrace the block-based system fully:
+- All components are blocks in `blocks/` directory
+- Each block is self-contained (JS + CSS)
+- Blocks transform initial HTML (content model) into final structure
+- Initial structure is the contract between authors and developers
+
+### Consequences
+
+**Positive:**
+- Clear separation of concerns
+- Reusable components
+- Blocks can be mixed and matched
+- Easy to add/remove functionality
+- Author-friendly editing experience
+
+**Negative:**
+- Cannot easily share code between blocks (by design)
+- Each block must be complete
+- Changing content models can break pages
+
+**Mitigation:**
+- Shared utilities in `scripts/aem.js`
+- Careful content model design upfront
+- Version block variants rather than changing models
+
+---
+
+## ADR-003: Three-Phase Loading Strategy
+
+**Date:** 2025-11-06
+**Status:** Accepted
+
+### Context
+Performance is critical for AEM Edge Delivery. Lighthouse scores must be 100/100. Loading everything at once would harm performance metrics.
+
+### Decision
+Implement three-phase progressive loading:
+1. **Eager** - Critical for LCP, first section only
+2. **Lazy** - Below-fold content, header, footer
+3. **Delayed** - Non-critical functionality (3s delay)
+
+### Consequences
+
+**Positive:**
+- Optimal LCP (Largest Contentful Paint)
+- Fast initial load
+- Non-blocking analytics/marketing
+- Consistent 100/100 Lighthouse scores
+
+**Negative:**
+- More complex to understand initially
+- Developers must categorize functionality
+- Header/footer not immediately available in code
+
+**Mitigation:**
+- Clear documentation of loading phases
+- Examples in boilerplate
+- Linting to catch common mistakes
+
+---
+
+## ADR-004: No Modification of `scripts/aem.js`
+
+**Date:** 2025-11-06
+**Status:** Accepted
+
+### Context
+`scripts/aem.js` is the core AEM library provided by Adobe. It handles block decoration, image optimization, and core functionality.
+
+### Decision
+**NEVER modify `scripts/aem.js`**. All project-specific code goes in:
+- `scripts/scripts.js` - Application logic
+- `blocks/{name}/{name}.js` - Block-specific code
+- `scripts/delayed.js` - Delayed functionality
+
+### Consequences
+
+**Positive:**
+- Easy to update from upstream boilerplate
+- Clear separation of Adobe code vs project code
+- Reduces merge conflicts
+- Ensures compatibility
+
+**Negative:**
+- Cannot extend core functionality directly
+- Must work within provided APIs
+
+**Mitigation:**
+- Extensive utility functions already provided
+- Can extend via `scripts/scripts.js`
+- Adobe APIs cover most use cases
+
+---
+
+## ADR-005: Mobile-First Responsive Design
+
+**Date:** 2025-11-06
+**Status:** Accepted
+
+### Context
+Most traffic comes from mobile devices. Desktop-first design often results in poor mobile experience.
+
+### Decision
+All CSS must be mobile-first with progressive enhancement:
+- Default styles are for mobile
+- Media queries enhance for larger screens
+- Standard breakpoints: 600px, 900px, 1200px
+
+### Consequences
+
+**Positive:**
+- Better mobile experience
+- Faster mobile load times (less CSS to override)
+- Forces consideration of mobile constraints
+- Aligns with performance goals
+
+**Negative:**
+- Desktop developers may find it less intuitive
+- Requires mindset shift
+
+**Mitigation:**
+- Clear examples in boilerplate
+- Documentation of standard breakpoints
+- Code review catches desktop-first approaches
+
+---
+
+## ADR-006: Semantic HTML and Progressive Enhancement
+
+**Date:** 2025-11-06
+**Status:** Accepted
+
+### Context
+Accessibility, SEO, and resilience require proper semantic markup and graceful degradation.
+
+### Decision
+All blocks must:
+- Use semantic HTML elements (header, nav, main, section, article, etc.)
+- Work without JavaScript (content visible)
+- Enhance with JavaScript for interactivity
+- Include proper ARIA attributes
+
+### Consequences
+
+**Positive:**
+- Excellent accessibility scores
+- Better SEO
+- Works in constrained environments
+- Future-proof
+
+**Negative:**
+- More markup complexity
+- Cannot rely on JavaScript for core functionality
+
+**Mitigation:**
+- Semantic HTML guidelines in docs
+- Block examples demonstrate patterns
+- Lighthouse accessibility checks enforce compliance
+
+---
+
+## ADR-007: Test Content as Documentation
+
+**Date:** 2025-11-06
+**Status:** Accepted
+
+### Context
+Documentation often becomes stale. Test content must exist for development anyway.
+
+### Decision
+Test content should serve dual purpose:
+- Used for development and testing
+- Acts as author documentation and examples
+- Placed in accessible locations (library, docs folder)
+- Shows all variants and edge cases
+
+### Consequences
+
+**Positive:**
+- Documentation always up-to-date
+- Authors see real examples
+- Reduces duplication
+- Living documentation
+
+**Negative:**
+- Test content must be more comprehensive
+- Requires careful content structure
+- May need cleanup before reuse
+
+**Mitigation:**
+- Clear guidelines for test content structure
+- Separate throwaway tests from documentation tests
+- Review test content quality in PR process
+
+---
+
+## ADR-008: Linting as Quality Gate
+
+**Date:** 2025-11-06
+**Status:** Accepted
+
+### Context
+Code quality and consistency are critical for maintainability and team collaboration.
+
+### Decision
+Enforce strict linting:
+- ESLint with Airbnb config for JavaScript
+- Stylelint for CSS
+- All code must pass `npm run lint`
+- Auto-fix available via `npm run lint:fix`
+
+### Consequences
+
+**Positive:**
+- Consistent code style
+- Catches common errors early
+- Enforces best practices
+- Easier code review
+
+**Negative:**
+- Learning curve for team
+- Occasional false positives
+- May feel restrictive initially
+
+**Mitigation:**
+- Auto-fix handles most issues
+- Clear documentation of rules
+- Can disable specific rules with justification
+
+---
+
+## ADR-009: Performance Budget: 100/100 Lighthouse
+
+**Date:** 2025-11-06
+**Status:** Accepted
+
+### Context
+Performance is a core value proposition of AEM Edge Delivery Services.
+
+### Decision
+Maintain strict performance budget:
+- All Lighthouse scores must be 100/100
+- PageSpeed Insights checks on every PR
+- Performance regressions block merging
+- No exceptions without explicit approval
+
+### Consequences
+
+**Positive:**
+- Exceptional user experience
+- Better SEO rankings
+- Lower bounce rates
+- Competitive advantage
+
+**Negative:**
+- Constrains what can be implemented
+- Some third-party tools incompatible
+- Requires constant vigilance
+
+**Mitigation:**
+- Delayed loading for non-critical features
+- Lazy loading for below-fold content
+- Clear guidelines for performance-safe patterns
+- Regular performance audits
+
+---
+
+## ADR-010: Claude Code Infrastructure
+
+**Date:** 2025-11-06
+**Status:** Accepted
+
+### Context
+Development workflows need consistency and guidance. Skills/hooks help enforce best practices.
+
+### Decision
+Implement comprehensive Claude Code infrastructure:
+- `.claude/skills/` - Development process guides
+- `.claude/hooks/` - Auto-activation and quality gates
+- `.claude/agents/` - Specialized task handlers
+- `.claude/docs/` - Persistent documentation
+- `.claude/examples/` - Reference implementations
+
+### Consequences
+
+**Positive:**
+- Consistent development workflows
+- Auto-enforcement of CDD and best practices
+- Knowledge survives context resets
+- Reduced onboarding time
+- Quality gates prevent common mistakes
+
+**Negative:**
+- Additional infrastructure to maintain
+- Only works with Claude Code
+- Learning curve for new developers
+
+**Mitigation:**
+- Clear documentation in each directory
+- Hooks can be disabled if needed
+- Corresponding Cursor rules for compatibility
+
+---
+
+## Template for New ADRs
+
+When adding new architectural decisions, use this template:
+
+```
+## ADR-NNN: [Decision Title]
+
+**Date:** YYYY-MM-DD
+**Status:** [Proposed | Accepted | Deprecated | Superseded]
+
+### Context
+[Describe the forces at play and why a decision is needed]
+
+### Decision
+[State the decision clearly and explain the approach]
+
+### Consequences
+
+**Positive:**
+- [List positive outcomes]
+
+**Negative:**
+- [List negative outcomes and tradeoffs]
+
+**Mitigation:**
+- [How we address the negative consequences]
+```
+
+---
+
+**Remember:** ADRs capture the "why" behind decisions. Update this document when making significant architectural choices that will impact future development.

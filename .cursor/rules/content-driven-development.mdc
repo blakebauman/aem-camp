@@ -1,0 +1,169 @@
+---
+alwaysApply: false
+description: Content-first development workflow for AEM Edge Delivery Services
+---
+
+# Content Driven Development (CDD)
+
+**MANDATORY PROCESS** for all AEM Edge Delivery Services development.
+
+## Core Principle
+
+**Authors first, developers second.** Content and author needs come before developer convenience.
+
+## When to Apply
+
+Apply CDD to ALL AEM development tasks:
+
+- ✅ Creating new blocks
+- ✅ Modifying existing blocks
+- ✅ Changes to core decoration functionality
+- ✅ Bug fixes requiring validation
+- ✅ Any code affecting author content structure
+
+Skip only for trivial CSS-only tweaks or config changes.
+
+## The Content-First Rule
+
+**NEVER start writing or modifying code without first identifying or creating test content.**
+
+## Why This Matters
+
+1. **Immediate testing** - No stopping development to create content
+2. **Better PRs** - Test content serves as PR validation link for PSI checks
+3. **Living documentation** - Test content becomes author documentation
+4. **Fewer assumptions** - Real content reveals edge cases
+
+## The Three-Phase Process
+
+### Phase 1: Content Discovery and Modeling
+
+#### For New Blocks
+
+1. Design content model (author-friendly, not developer-friendly)
+2. Create test content in CMS or local HTML
+3. Validate content loads correctly
+
+#### For Existing Block Modifications
+
+1. Find existing content: Use `.claude/skills/content-driven-development/scripts/find-block-content.js`
+2. If no content exists, create it following new block process
+3. Validate structure isn't changing (if it is, redesign model)
+
+#### Content Model Design Checklist
+
+- [ ] Structure is intuitive for authors
+- [ ] Variants are clearly distinguished
+- [ ] Edge cases are considered
+- [ ] Examples are realistic and relatable
+- [ ] Can serve as documentation
+
+### Phase 2: Implementation
+
+**CRITICAL: Do not begin until test content exists and is accessible.**
+
+#### Implementation Checklist
+
+- [ ] Test content URL confirmed
+- [ ] Content model documented
+- [ ] Similar blocks researched (Block Collection/Party)
+- [ ] Development environment running
+- [ ] Test content loads in `localhost:3000`
+
+#### Development Process
+
+1. Inspect actual HTML structure: `curl http://localhost:3000/test-page`
+2. Write decoration code against real structure
+3. Test continuously with actual content
+4. Handle all variants shown in test content
+5. Consider edge cases revealed by content
+
+### Phase 3: Validation
+
+#### Testing Checklist
+
+- [ ] View test content in local dev environment
+- [ ] Verify all variants render correctly
+- [ ] Check responsive behavior (mobile/tablet/desktop)
+- [ ] Test edge cases
+- [ ] Validate accessibility (keyboard, screen reader)
+- [ ] Run `npm run lint` (fix with `npm run lint:fix`)
+
+#### PR Preparation Checklist
+
+- [ ] Test content exists in CMS (not just local HTML)
+- [ ] Test content URL accessible for PSI checks
+- [ ] All linting passes
+- [ ] Author documentation updated (if needed)
+
+## Scripts and Tools
+
+### Find Existing Block Content
+
+```bash
+# Search localhost
+node .claude/skills/content-driven-development/scripts/find-block-content.js <block-name>
+
+# Search with variant
+node .claude/skills/content-driven-development/scripts/find-block-content.js <block-name> localhost:3000 <variant>
+
+# Search live site
+node .claude/skills/content-driven-development/scripts/find-block-content.js <block-name> main--repo--owner.aem.live
+```
+
+### Create Local Test Content
+
+Create HTML files in `drafts/` folder, then restart dev server:
+
+```bash
+aem up --html-folder drafts
+```
+
+See `.claude/skills/content-driven-development/resources/html-structure.md` for proper HTML format.
+
+## Anti-Patterns to Avoid
+
+❌ **Don't:**
+- Start with code before understanding content model
+- Assume content structure without real examples
+- Create developer-friendly but author-hostile models
+- Skip content creation "to save time"
+- Test against imagined content
+- Treat test content as separate from development
+
+✅ **Do:**
+- Always create/find test content first
+- Design for authors, not developers
+- Use real content to drive development
+- Make test content serve as documentation
+- Validate continuously with actual content
+
+## Workflow Summary
+
+```
+1. CONTENT DISCOVERY
+   └─ Existing content? → Use it
+   └─ New block/structure? → Design model → Create content
+
+2. IMPLEMENTATION
+   └─ Build against real content model
+   └─ Test continuously with actual content
+
+3. VALIDATION
+   └─ Comprehensive testing
+   └─ Quality checks
+   └─ PR with test URL
+
+KEY RULE: Never code without test content
+```
+
+## Integration with Other Processes
+
+- **Content Modeling** - Design author-friendly structures
+- **Building Blocks** - Implement block code
+- **Testing** - Validate quality
+- **Block Collection/Party** - Find reference patterns
+
+---
+
+**Remember:** Content comes first. Always. No exceptions.

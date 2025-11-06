@@ -1,0 +1,300 @@
+---
+alwaysApply: true
+description: AEM Edge Delivery Services architecture and core principles
+---
+
+# AEM Edge Delivery Services Architecture
+
+## Core Architecture Principles
+
+### 1. Content-Driven Development
+**Authors first, developers second.** All development starts with content and author needs.
+
+### 2. Block-Based System
+Everything is a **block** - self-contained, reusable components that transform authored content into experiences.
+
+### 3. Three-Phase Loading
+Pages load progressively for optimal performance:
+
+1. **Eager**: Critical for LCP (Largest Contentful Paint) - first section only
+2. **Lazy**: Below-the-fold content - remaining sections, header, footer
+3. **Delayed**: Non-critical - analytics, marketing tags (3s delay)
+
+## Directory Structure
+
+```
+├── blocks/              # Reusable content blocks
+│   └── {block-name}/
+│       ├── {block-name}.js    # Block decoration logic
+│       └── {block-name}.css   # Block styles
+│
+├── scripts/             # Core JavaScript
+│   ├── aem.js          # Core AEM library (DO NOT MODIFY)
+│   ├── scripts.js      # App entry point, page lifecycle
+│   └── delayed.js      # Delayed functionality
+│
+├── styles/              # Global styles
+│   ├── styles.css      # Critical styles (eager)
+│   └── lazy-styles.css # Additional styles (lazy)
+│
+└── drafts/              # Local test content (optional)
+```
+
+## Key Files
+
+### `scripts/aem.js` - DO NOT MODIFY
+Core AEM library providing:
+- Block decoration system
+- Section management
+- Image optimization (`createOptimizedPicture`)
+- Icon and button decoration
+- Fragment loading
+
+### `scripts/scripts.js`
+Application entry point:
+- Auto-blocking (hero blocks from h1+picture)
+- Page lifecycle (`loadEager`, `loadLazy`, `loadDelayed`)
+- Global utilities
+- Custom decoration logic
+
+### `scripts/delayed.js`
+Deferred functionality (3s delay):
+- Analytics initialization
+- Marketing tags
+- Third-party integrations
+- Non-critical features
+
+## Block System
+
+### Block Discovery
+1. AEM backend delivers HTML with block markers: `<div class="block-name">`
+2. `aem.js` discovers all blocks on page
+3. Blocks load based on section visibility
+4. Block's `decorate(block)` function called
+
+### Block Decoration Pattern
+
+```javascript
+export default async function decorate(block) {
+  // 1. Read initial structure (from authors)
+  const rows = [...block.children];
+  
+  // 2. Extract data
+  const data = extractDataFromRows(rows);
+  
+  // 3. Transform DOM
+  block.innerHTML = '';
+  block.append(buildNewStructure(data));
+  
+  // 4. Add behavior (if needed)
+  addEventListeners(block);
+}
+```
+
+### Content Model Contract
+
+The initial HTML structure delivered by AEM is the **content model** - the contract between authors and developers.
+
+**CRITICAL:** Changes to content models can break existing pages. Design carefully.
+
+**Example: Hero Block**
+```html
+<div class="hero">
+  <div>
+    <div><picture>...</picture></div>  <!-- Image -->
+  </div>
+  <div>
+    <div><h1>Title</h1></div>          <!-- Title -->
+    <div><p>Description</p></div>      <!-- Description -->
+    <div><a href="#">CTA</a></div>     <!-- Call to action -->
+  </div>
+</div>
+```
+
+## Development Workflow
+
+### Standard Process
+1. **Content First** - Create or identify test content
+2. **Design Model** - Ensure author-friendly
+3. **Find Patterns** - Search Block Collection/Party
+4. **Implement** - Write decoration logic and styles
+5. **Test** - Validate with real content
+6. **Quality Check** - Linting, accessibility, performance
+7. **PR** - Include test content URL for validation
+
+### Inspecting Content Structure
+
+```bash
+# View page HTML
+curl http://localhost:3000/path/to/page
+
+# View source markdown
+curl http://localhost:3000/path/to/page.md
+```
+
+## Content Authoring
+
+### Authoring Interfaces
+- Google Docs/SharePoint - Document-based
+- Document Authoring (DA) - Sidekick-enhanced
+- Universal Editor - WYSIWYG
+- GitHub - Direct code/content
+
+### Content Delivery Pipeline
+1. Author creates/edits content
+2. Published to preview: `*.aem.page`
+3. Approved and published to live: `*.aem.live`
+4. CDN caches and delivers globally
+
+### Block Authoring in Documents
+
+Blocks are authored as tables:
+
+```
+| Block Name (Type) |
+| Content Row 1     |
+| Content Row 2     |
+```
+
+## Performance Requirements
+
+### Core Web Vitals (MANDATORY)
+- **LCP** (Largest Contentful Paint): < 2.5s
+  - Eager load first section only
+  - Optimize hero images (use `createOptimizedPicture`)
+  - Minimize blocking resources
+
+- **FID** (First Input Delay): < 100ms
+  - Minimize JavaScript on initial load
+  - Use passive event listeners
+  - Defer non-critical scripts
+
+- **CLS** (Cumulative Layout Shift): < 0.1
+  - Reserve space for images
+  - Avoid DOM shifts during decoration
+  - Size placeholders correctly
+
+### Lighthouse Requirement
+All scores must be **100/100** (Performance, Accessibility, Best Practices, SEO)
+
+## Common Patterns
+
+### Fragment Loading
+```javascript
+import { loadFragment } from '../blocks/fragment/fragment.js';
+
+const fragment = await loadFragment('/fragments/header');
+block.append(fragment);
+```
+
+### Variant Handling
+```html
+<div class="hero dark">...</div>
+<div class="cards three-up">...</div>
+```
+
+CSS handles variants:
+```css
+.hero.dark {
+  background: black;
+  color: white;
+}
+```
+
+### Icon System
+```javascript
+// Auto-decorated from HTML
+<span class="icon icon-search"></span>
+
+// Or programmatically
+import { getIcon } from '../../scripts/aem.js';
+const icon = getIcon('search');
+```
+
+### Responsive Design (Mobile-First)
+```css
+/* Mobile default */
+.block { padding: 16px; }
+
+/* Tablet */
+@media (min-width: 600px) {
+  .block { padding: 24px; }
+}
+
+/* Desktop */
+@media (min-width: 900px) {
+  .block { padding: 32px; }
+}
+```
+
+## Testing Strategy
+
+### Types of Tests
+1. **Manual** - Visual validation, basic functionality
+2. **Unit** - Logic-heavy utilities (vitest)
+3. **Browser** - Complex interactions (Playwright)
+4. **Performance** - PageSpeed Insights on PR (automated)
+
+### Testing Philosophy
+- **Keeper Tests** - Maintain for critical functionality
+- **Throwaway Tests** - Validate then discard
+- Test behavior, not implementation
+- Real content = real tests
+
+## Deployment Pipeline
+
+### Environments
+- **Local**: `localhost:3000` (code from local, content from preview)
+- **Preview**: `{branch}--{repo}--{owner}.aem.page`
+- **Live**: `main--{repo}--{owner}.aem.live`
+
+### PR Requirements
+1. Create feature branch
+2. Changes sync to preview automatically
+3. Open PR with **preview link in description** (required for PSI)
+4. Automated checks run (linting, PSI)
+5. Human review
+6. Merge to main → Live deployment
+
+## Anti-Patterns to Avoid
+
+❌ **Don't:**
+- Modify `scripts/aem.js` (core library)
+- Start coding before content exists
+- Create developer-friendly but author-hostile models
+- Skip linting
+- Commit without testing
+- Push without PR validation URL
+- Use complex build processes
+- Add unnecessary dependencies
+- Use jQuery or heavy frameworks
+- Block rendering with synchronous scripts
+- Hardcode content that should be authored
+
+✅ **Do:**
+- Follow Content-Driven Development
+- Design for authors
+- Keep blocks simple and focused
+- Test with real content
+- Maintain performance budgets
+- Follow existing patterns
+- Use native browser APIs
+- Load scripts asynchronously
+- Embrace progressive enhancement
+
+## Resources
+
+### Documentation
+- [AEM Live Documentation](https://www.aem.live/)
+- [Developer Tutorial](https://www.aem.live/developer/tutorial)
+- [Anatomy of a Project](https://www.aem.live/developer/anatomy-of-a-project)
+- [David's Model](https://www.aem.live/docs/davidsmodel)
+
+### Reference Code
+- [AEM Boilerplate](https://github.com/adobe/aem-boilerplate)
+- [Block Collection](https://github.com/adobe/aem-block-collection)
+- [Block Party](https://block-party.aem.live/)
+
+---
+
+**Note:** This architecture prioritizes performance, author experience, and content-first development. Follow these principles for all development.

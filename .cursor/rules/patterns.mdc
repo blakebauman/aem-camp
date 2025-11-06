@@ -1,0 +1,553 @@
+---
+alwaysApply: false
+description: Common code patterns and solutions for AEM Edge Delivery
+---
+
+# Common Patterns and Solutions
+
+Reference this for consistency and to avoid reinventing solutions.
+
+## Block Decoration Patterns
+
+### Basic Block Decoration
+```javascript
+export default function decorate(block) {
+  const rows = [...block.children];
+  
+  rows.forEach((row) => {
+    const cells = [...row.children];
+    // Process cells
+  });
+}
+```
+
+### Async Block Decoration
+```javascript
+export default async function decorate(block) {
+  // Async operations
+  const data = await fetch('/data.json').then(r => r.json());
+  const fragment = await loadFragment('/fragments/...');
+  
+  // Build UI
+  block.innerHTML = '';
+  block.append(buildUI(data));
+}
+```
+
+### Block with Variants
+```javascript
+export default function decorate(block) {
+  const variant = [...block.classList].find(cls => 
+    ['dark', 'light', 'large'].includes(cls)
+  );
+  
+  if (variant === 'dark') {
+    // Dark variant handling
+  }
+}
+```
+
+### Block with Configuration
+```javascript
+import { readBlockConfig } from '../../scripts/aem.js';
+
+export default function decorate(block) {
+  // Extract config from first row(s)
+  const config = readBlockConfig(block);
+  // Returns object with key-value pairs
+  
+  if (config.style === 'highlight') {
+    block.classList.add('highlight');
+  }
+}
+```
+
+## DOM Manipulation Patterns
+
+### Safe Element Creation
+```javascript
+function createDiv(className, content = '') {
+  const div = document.createElement('div');
+  if (className) div.className = className;
+  if (content) div.textContent = content;
+  return div;
+}
+```
+
+### Building Complex Structures
+```javascript
+function buildCard(data) {
+  const card = document.createElement('div');
+  card.className = 'card';
+  
+  const image = document.createElement('div');
+  image.className = 'card-image';
+  if (data.picture) image.append(data.picture);
+  
+  const content = document.createElement('div');
+  content.className = 'card-content';
+  
+  const title = document.createElement('h3');
+  title.textContent = data.title;
+  
+  const description = document.createElement('p');
+  description.textContent = data.description;
+  
+  content.append(title, description);
+  card.append(image, content);
+  
+  return card;
+}
+```
+
+### Safe Data Extraction
+```javascript
+function getTextContent(element) {
+  return element?.textContent?.trim() || '';
+}
+
+function getHref(element) {
+  const link = element?.querySelector('a');
+  return link?.href || '#';
+}
+
+function extractPicture(element) {
+  const picture = element?.querySelector('picture');
+  return picture ? picture.cloneNode(true) : null;
+}
+```
+
+## Image Handling Patterns
+
+### Using createOptimizedPicture
+```javascript
+import { createOptimizedPicture } from '../../scripts/aem.js';
+
+// Basic usage
+const picture = createOptimizedPicture(
+  img.src,
+  img.alt,
+  false  // lazy loading (true for LCP images)
+);
+
+// With responsive breakpoints
+const picture = createOptimizedPicture(
+  img.src,
+  img.alt,
+  false,
+  [
+    { media: '(min-width: 900px)', width: '2000' },
+    { media: '(min-width: 600px)', width: '1200' },
+    { width: '750' }
+  ]
+);
+
+// Eager loading for LCP
+const heroPicture = createOptimizedPicture(
+  heroImg.src,
+  heroImg.alt,
+  true  // eager = high priority
+);
+```
+
+### Preserving Existing Pictures
+```javascript
+// Don't recreate - preserve AEM's optimization
+const picture = cell.querySelector('picture');
+if (picture) {
+  // Use existing picture element
+  newContainer.append(picture);
+}
+```
+
+## Link and Button Patterns
+
+### Button Decoration
+```javascript
+import { decorateButtons } from '../../scripts/aem.js';
+
+export default function decorate(block) {
+  // Auto-decorates links as buttons based on parent structure
+  decorateButtons(block);
+  
+  // <p><a>Link</a></p> → .button
+  // <p><strong><a>Link</a></strong></p> → .button.primary
+  // <p><em><a>Link</a></em></p> → .button.secondary
+}
+```
+
+### Creating Buttons Manually
+```javascript
+function createButton(text, href, variant = 'primary') {
+  const p = document.createElement('p');
+  const a = document.createElement('a');
+  a.href = href;
+  a.textContent = text;
+  
+  if (variant === 'primary') {
+    const strong = document.createElement('strong');
+    strong.append(a);
+    p.append(strong);
+  } else {
+    p.append(a);
+  }
+  
+  return p;
+}
+```
+
+## Event Handling Patterns
+
+### Click Handlers
+```javascript
+function setupClickHandlers(block) {
+  const buttons = block.querySelectorAll('.button');
+  
+  buttons.forEach((button) => {
+    button.addEventListener('click', (e) => {
+      // Handle click
+      console.log('Button clicked', button);
+    });
+  });
+}
+```
+
+### Keyboard Accessibility
+```javascript
+function makeKeyboardAccessible(element, callback) {
+  element.setAttribute('tabindex', '0');
+  element.setAttribute('role', 'button');
+  
+  element.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      callback(e);
+    }
+  });
+  
+  element.addEventListener('click', callback);
+}
+```
+
+### Carousel/Slider Pattern
+```javascript
+function setupCarousel(block) {
+  const slides = [...block.querySelectorAll('.slide')];
+  let currentSlide = 0;
+  
+  function showSlide(index) {
+    slides.forEach((slide, i) => {
+      slide.classList.toggle('active', i === index);
+      slide.setAttribute('aria-hidden', i !== index);
+    });
+  }
+  
+  function nextSlide() {
+    currentSlide = (currentSlide + 1) % slides.length;
+    showSlide(currentSlide);
+  }
+  
+  function prevSlide() {
+    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+    showSlide(currentSlide);
+  }
+  
+  // Add navigation
+  const prevBtn = block.querySelector('.carousel-prev');
+  const nextBtn = block.querySelector('.carousel-next');
+  
+  prevBtn?.addEventListener('click', prevSlide);
+  nextBtn?.addEventListener('click', nextSlide);
+  
+  // Keyboard navigation
+  block.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') prevSlide();
+    if (e.key === 'ArrowRight') nextSlide();
+  });
+  
+  showSlide(0);
+}
+```
+
+## Fragment Loading Patterns
+
+### Loading Single Fragment
+```javascript
+import { loadFragment } from '../blocks/fragment/fragment.js';
+
+export default async function decorate(block) {
+  const link = block.querySelector('a');
+  
+  if (link) {
+    const fragment = await loadFragment(link.href);
+    block.innerHTML = '';
+    block.append(fragment);
+  }
+}
+```
+
+### Loading Multiple Fragments
+```javascript
+export default async function decorate(block) {
+  const links = [...block.querySelectorAll('a')];
+  const fragments = await Promise.all(
+    links.map(link => loadFragment(link.href))
+  );
+  
+  block.innerHTML = '';
+  fragments.forEach(fragment => {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'fragment-wrapper';
+    wrapper.append(fragment);
+    block.append(wrapper);
+  });
+}
+```
+
+## Data Extraction Patterns
+
+### Table-Like Content
+```javascript
+function extractTableData(block) {
+  const rows = [...block.children];
+  return rows.map(row => {
+    const cells = [...row.children];
+    return {
+      key: getTextContent(cells[0]),
+      value: getTextContent(cells[1]),
+    };
+  });
+}
+```
+
+### List-Based Content
+```javascript
+function extractListItems(block) {
+  const rows = [...block.children];
+  
+  return rows.map(row => {
+    const cells = [...row.children];
+    return {
+      picture: extractPicture(cells[0]),
+      title: getTextContent(cells[1]),
+      description: getTextContent(cells[2]),
+      link: cells[3]?.querySelector('a'),
+    };
+  });
+}
+```
+
+## Icon Patterns
+
+### Using Icons
+```javascript
+import { decorateIcons } from '../../scripts/aem.js';
+
+export default async function decorate(block) {
+  // Add icon spans to content
+  const button = document.createElement('button');
+  button.innerHTML = '<span class="icon icon-search"></span> Search';
+  
+  // Decorate icons (converts spans to img)
+  decorateIcons(block);
+}
+```
+
+## CSS Patterns
+
+### Block Scoping
+```css
+/* All styles scoped to block */
+.my-block {
+  padding: 2rem;
+}
+
+.my-block .title {
+  font-size: var(--heading-font-size-l);
+}
+
+.my-block .card {
+  border: 1px solid #eee;
+}
+```
+
+### Responsive Grid
+```css
+.cards {
+  display: grid;
+  grid-template-columns: 1fr;  /* Mobile first - single column */
+  gap: 2rem;
+  padding: 2rem;
+}
+
+@media (min-width: 600px) {
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Or auto-fill for flexible layouts */
+.cards {
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+```
+
+### Variant Styles
+```css
+.hero {
+  background: white;
+  color: black;
+}
+
+.hero.dark {
+  background: black;
+  color: white;
+}
+
+.hero.large {
+  min-height: 80vh;
+}
+```
+
+### Container Pattern
+```css
+.hero > div {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+@media (min-width: 900px) {
+  .hero > div {
+    padding: 0 2rem;
+  }
+}
+```
+
+## Intersection Observer Patterns
+
+### Lazy Loading Content
+```javascript
+function setupLazyLoading(block) {
+  const items = block.querySelectorAll('.lazy-item');
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const item = entry.target;
+        item.classList.add('loaded');
+        loadItemContent(item);
+        observer.unobserve(item);
+      }
+    });
+  }, {
+    rootMargin: '50px',
+  });
+  
+  items.forEach(item => observer.observe(item));
+}
+```
+
+### Animations on Scroll
+```javascript
+function setupScrollAnimations(block) {
+  const elements = block.querySelectorAll('[data-animate]');
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('animated');
+      }
+    });
+  }, {
+    threshold: 0.1,
+  });
+  
+  elements.forEach(el => observer.observe(el));
+}
+```
+
+## Error Handling Patterns
+
+### Safe Async Operations
+```javascript
+export default async function decorate(block) {
+  try {
+    const response = await fetch('/api/data');
+    if (!response.ok) throw new Error('Fetch failed');
+    
+    const data = await response.json();
+    renderContent(block, data);
+  } catch (error) {
+    console.error('Error loading content:', error);
+    block.innerHTML = '<p>Unable to load content. Please try again.</p>';
+  }
+}
+```
+
+### Graceful Degradation
+```javascript
+function decorateWithFallback(block) {
+  const requiredElement = block.querySelector('.required');
+  
+  if (!requiredElement) {
+    console.warn('Required element not found, using fallback');
+    block.innerHTML = '<p>Content not available</p>';
+    return;
+  }
+  
+  // Normal decoration
+  decorateNormal(block);
+}
+```
+
+## Performance Patterns
+
+### Debouncing
+```javascript
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
+// Usage
+window.addEventListener('resize', debounce(() => {
+  recalculateLayout();
+}, 250));
+```
+
+### Throttling
+```javascript
+function throttle(func, limit) {
+  let inThrottle;
+  return function executedFunction(...args) {
+    if (!inThrottle) {
+      func.apply(this, args);
+      inThrottle = true;
+      setTimeout(() => inThrottle = false, limit);
+    }
+  };
+}
+
+// Usage
+window.addEventListener('scroll', throttle(() => {
+  updateScrollPosition();
+}, 100));
+```
+
+---
+
+**Remember:** Follow established patterns for consistency. Add new patterns to this document when solving common problems in reusable ways.

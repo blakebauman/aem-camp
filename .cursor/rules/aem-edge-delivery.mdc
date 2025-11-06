@@ -5,6 +5,26 @@ description: Adobe AEM Edge Delivery Services
 
 # Adobe AEM Edge Delivery Services - Cursor Rules
 
+## Using This Project's Rules
+
+This rule provides **quick reference** for common AEM tasks and is always active. For specialized guidance on specific workflows, reference these additional rules:
+
+### Development Workflow Rules
+- **@content-driven-development** - Mandatory content-first development process (use for ALL development tasks)
+- **@building-blocks** - Detailed block implementation patterns and best practices
+- **@content-modeling** - Designing author-friendly content structures
+- **@testing-blocks** - Comprehensive testing strategies and PR preparation
+
+### Reference & Context Rules
+- **@patterns** - Common code patterns and reusable solutions
+- **@architecture** - Complete system architecture and deployment (always active)
+- **@decisions** - Architecture Decision Records (ADRs) explaining "why"
+
+**Always active:** `aem-edge-delivery` (this file), `architecture`  
+**Use when needed:** All other specialized rules
+
+---
+
 ## Project Overview
 
 This is an Adobe Experience Manager (AEM) Edge Delivery Services project using the AEM boilerplate architecture. The project emphasizes web performance, semantic HTML, and progressive enhancement.
